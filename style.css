@@ -1,0 +1,246 @@
+/* --- 1. GLOBAL & SETUP --- */
+:root {
+    --bg-color: #000000;
+    --text-color: #e4e6eb;
+    --accent-color: #ffffff;
+    --surface-color: #1a1a1a;
+    --transition-speed: 0.5s;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.navbar {
+    background-color: rgba(17, 17, 17, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+/* --- 2. LAYOUT & STICKY BEHAVIOR --- */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Needed for absolute positioning of the arrow */
+}
+
+.features-wrapper {
+    height: 400vh;
+    position: relative;
+}
+
+.features-section {
+    height: 100vh;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* --- 3. CONTENT STYLING --- */
+.visual-content { text-align: center; }
+.demo-reel {
+    width: 300px;
+    height: 550px;
+    border: 2px solid #333;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+}
+.demo-reel video { width: 100%; height: 100%; object-fit: cover; }
+.headset-graphic { margin-top: 2rem; }
+.headset-graphic img { width: 150px; opacity: 0.8; }
+
+/* NEW: Scroll Indicator Arrow */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    border-left: 3px solid var(--accent-color);
+    border-bottom: 3px solid var(--accent-color);
+    transform: translateX(-50%) rotate(-45deg);
+    animation: bounce 2.2s infinite cubic-bezier(0.25, 1, 0.5, 1);
+    transition: opacity 0.4s ease-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0) rotate(-45deg); }
+    50% { transform: translateX(-50%) translateY(-15px) rotate(-45deg); }
+}
+
+/* --- 4. INTERACTIVE SCROLLER (LAPTOP) --- */
+.interactive-scroller {
+    display: flex;
+    max-width: 1400px;
+    width: 100%;
+    padding: 0 2rem;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.text-reel-container, .sticky-photo-container, .media-reel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-reel-container { flex-basis: 25%; }
+.text-reel { height: 250px; width: 100%; overflow: hidden; }
+.text-strip { transition: transform var(--transition-speed) ease-out; }
+.text-item {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: opacity var(--transition-speed) ease-in-out;
+    opacity: 0.3;
+}
+.text-item.active { opacity: 1; }
+.text-item h3 { font-size: 2.2rem; color: var(--accent-color); margin: 0 0 0.5rem 0; font-weight: 900; }
+.text-item p { font-size: 1.1rem; line-height: 1.6; }
+
+.sticky-photo-container { flex-basis: 40%; }
+.sticky-photo img { max-width: 100%; border-radius: 12px; }
+
+.media-reel-container { flex-basis: 25%; }
+.media-reel { width: 100%; height: 250px; border-radius: 12px; overflow: hidden; background-color: var(--surface-color); }
+.media-strip { transition: transform var(--transition-speed) ease-out; }
+.media-item { width: 100%; height: 250px; }
+.media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- 5. MOBILE VIEW --- */
+.mobile-scroller { display: none; }
+@media (max-width: 900px) {
+    .features-wrapper { display: none; }
+    
+    /* NEW: Interactive Snap Scroller for Mobile */
+    .mobile-scroller {
+        display: block;
+        scroll-snap-type: y mandatory; /* Enable vertical snapping */
+        overflow-y: scroll; /* Allow scrolling */
+        height: calc(100vh - 60px); /* Fill the screen below the navbar */
+        padding-top: 5vh;
+        box-sizing: border-box;
+    }
+    .mobile-slide {
+        background-color: var(--surface-color);
+        border-radius: 20px;
+        overflow: hidden;
+        margin: 0 1rem 5vh 1rem;
+        height: calc(90vh - 60px); /* Make each slide nearly full height */
+        scroll-snap-align: start; /* Snap the top of each slide to the top */
+        display: flex;
+        flex-direction: column;
+    }
+    .mobile-media { flex: 1.5; overflow: hidden; }
+    .mobile-media img, .mobile-media video { width: 100%; height: 100%; object-fit: cover; }
+    .mobile-text { 
+        flex: 1; 
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .mobile-text h3 { font-size: 1.5rem; margin: 0 0 0.5rem 0; color: var(--accent-color); font-weight: 700; }
+    .mobile-text p { font-size: 0.95rem; line-height: 1.5; margin: 0; }
+}
+
+/* --- 6. FOOTER --- */
+.launch-info {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--surface-color);
+}
+.launch-info h2 { font-size: 2rem; color: var(--accent-color); margin: 0; }
+.launch-info p { margin-top: 0.5rem; }
+
+/* --- REFINED: Info Section Styles with New Classes --- */
+.info-section {
+    padding: 120px 2rem;
+    background-color: var(--surface-light);
+ 
+}
+
+/* --- 6. FOOTER --- */
+.launch-info {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: black;
+}
+.launch-info h2 { font-size: 2rem; color: var(--accent-color); margin: 0; }
+.launch-info p { margin-top: 0.5rem; }
+
+
+
+.info-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.info-media {
+    flex: 1; /* Takes up half the space */
+}
+
+.info-text {
+    flex: 1; /* Takes up the other half */
+}
+
+/* Specific classes for your content */
+.info-image,
+.info-video {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+}
+
+.info-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    margin: 0 0 1rem 0;
+}
+
+.info-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 55ch; /* Improves readability */
+}
+
+/* Responsive stacking for the info section */
+@media (max-width: 768px) {
+    .info-section {
+        padding: 80px 1rem;
+    }
+    .info-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .info-title {
+        font-size: 2rem;
+    }
+}
+
+
