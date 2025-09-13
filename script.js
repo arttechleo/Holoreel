@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+// NEW: All your main website logic is now in a single, exportable function.
+export function initializeApp() {
     // --- CACHE DOM ELEMENTS ---
     const promoVideo = document.getElementById('promo-video');
     const scrollIndicator = document.querySelector('.scroll-indicator');
@@ -76,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             onResize(); 
 
             if (headsetModel) {
-                // INCREASED SENSITIVITY from 0.5 to 1.2 for a more aggressive feel
                 headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
                 headsetModel.rotation.x += (-mouse.y * 1.2 - headsetModel.rotation.x) * 0.05;
             }
@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         window.addEventListener('resize', onResize);
-        onResize(); 
         animate(); 
     }
     
@@ -166,4 +165,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileView();
     handleScrollAnimation();
     initThreeJS();
-});
+}
