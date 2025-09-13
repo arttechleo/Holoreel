@@ -41,7 +41,7 @@ export function initializeApp() {
         let headsetModel;
         const loader = new GLTFLoader();
         
-        loader.load('./media/3D/Quest3.glb', (gltf) => {
+        loader.load('./Media/3D/Quest3.glb', (gltf) => {
             headsetModel = gltf.scene;
             const box = new THREE.Box3().setFromObject(headsetModel);
             const center = box.getCenter(new THREE.Vector3());
