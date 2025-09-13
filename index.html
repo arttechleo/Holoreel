@@ -22,7 +22,7 @@
 
 <body>
 
-     <!-- NEW: Loading Screen Container -->
+    <!-- NEW: Loading Screen Container -->
     <div id="loading-screen"></div>
 
     <!-- NEW: Wrapper for all your main site content -->
@@ -36,127 +36,116 @@
         </nav>
 
 
-    <nav class="navbar">
-        <div class="nav-left"></div>
-
-        <div class="logo-container">
-            <div class="logo">
-                <!-- The image is now wrapped in a link -->
-                <a href="./index.html">
-                    <img src="./media/logo/logo.png" alt="Holoreel Logo">
-                </a>
-            </div>
-        </div>
-
-        <div class="nav-right"></div>
-    </nav>
-
-    <main>
-        <section class="hero-section">
-            <div class="visual-content">
-                <div class="demo-reel">
-                    <video id="promo-video" autoplay loop playsinline poster="YOUR_VIDEO_POSTER.jpg">
-                        <source src="./media/video/Holoreel_Promo_Pitchdeck.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+        <main>
+            <section class="hero-section">
+                <div class="visual-content">
+                    <div class="demo-reel">
+                        <div class="video-overlay-wrapper">
+                            <iframe id="youtube-promo-video"
+                                src="https://www.youtube.com/embed/frvPnPVq7kI?autoplay=1&mute=1&loop=1&playlist=frvPnPVq7kI&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1"
+                                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                            </iframe>
+                            <div class="video-overlay"></div>
+                        </div>
+                    </div>
                 </div>
+                <div class="scroll-indicator"></div>
+            </section>
+
+            <div class="features-wrapper">
+                <section class="features-section">
+                    <div class="interactive-scroller">
+                        <div class="text-reel-container">
+                            <div class="text-reel">
+                                <div class="text-strip">
+                                    <div class="text-item">
+                                        <h3>3D Models</h3>
+                                        <p>View static and animated 3D models in a new way.</p>
+                                    </div>
+                                    <div class="text-item">
+                                        <h3>HoloPhoto</h3>
+                                        <p>Create Holophotos with a smartphone and experience them from any angle.</p>
+                                    </div>
+                                    <div class="text-item">
+                                        <h3>HoloVideo</h3>
+                                        <p>Record Holovideos to feel present in the moment.</p>
+                                    </div>
+                                    <div class="text-item">
+                                        <h3>Spatial Photo</h3>
+                                        <p>Look into the moments captured together.</p>
+                                    </div>
+                                    <div class="text-item">
+                                        <h3>Spatial Video</h3>
+                                        <p>Relieve your emotions during that important day.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sticky-photo-container">
+                            <div class="sticky-photo">
+                                <canvas id="quest-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="media-reel-container">
+                            <div class="media-reel">
+                                <div class="media-strip">
+                                    <div class="media-item"><video autoplay muted loop playsinline>
+                                            <source src="./media/video/Elden_Ring_GS_capture.mp4" type="video/mp4">
+                                        </video></div>
+                                    <div class="media-item"><video autoplay muted loop playsinline>
+                                            <source src="./media/video/holophoto.mp4" type="video/mp4">
+                                        </video></div>
+                                    <div class="media-item"><video autoplay muted loop playsinline>
+                                            <source src="./media/video/Holovideos.mp4" type="video/mp4">
+                                        </video></div>
+                                    <div class="media-item"><img src="./media/video/spatial_photo.png" alt=""></div>
+                                    <div class="media-item"><video autoplay muted loop playsinline>
+                                            <source src="./media/video/spatial_video.mp4" type="video/mp4">
+                                        </video></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div class="scroll-indicator"></div>
-        </section>
 
-        <div class="features-wrapper">
-            <section class="features-section">
-                <div class="interactive-scroller">
-                    <div class="text-reel-container">
-                        <div class="text-reel">
-                            <div class="text-strip">
-                                <div class="text-item">
-                                    <h3>3D Models</h3>
-                                    <p>View static and animated 3D models in a new way.</p>
-                                </div>
-                                <div class="text-item">
-                                    <h3>HoloPhoto</h3>
-                                    <p>Create Holophotos with a smartphone and experience them from any angle.</p>
-                                </div>
-                                <div class="text-item">
-                                    <h3>HoloVideo</h3>
-                                    <p>Record Holovideos to feel present in the moment.</p>
-                                </div>
-                                <div class="text-item">
-                                    <h3>Spatial Photo</h3>
-                                    <p>Look into the moments captured together.</p>
-                                </div>
-                                <div class="text-item">
-                                    <h3>Spatial Video</h3>
-                                    <p>Relieve your emotions during that important day.</p>
-                                </div>
-                            </div>
-                        </div>
+            <div class="mobile-scroller"></div>
+
+            <section class="info-section">
+                <div class="info-container">
+                    <div class="info-media">
+                        <video class="info-video" autoplay muted loop playsinline>
+                            <source src="./media/video/Holographic_company.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
-
-                    <div class="sticky-photo-container">
-                        <div class="sticky-photo">
-                            <canvas id="quest-canvas"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="media-reel-container">
-                        <div class="media-reel">
-                            <div class="media-strip">
-                                <div class="media-item"><video autoplay muted loop playsinline>
-                                        <source src="./media/video/Elden_Ring_GS_capture.mp4" type="video/mp4">
-                                    </video></div>
-                                <div class="media-item"><video autoplay muted loop playsinline>
-                                        <source src="./media/video/holophoto.mp4" type="video/mp4">
-                                    </video></div>
-                                <div class="media-item"><video autoplay muted loop playsinline>
-                                        <source src="./media/video/Holovideos.mp4" type="video/mp4">
-                                    </video></div>
-                                <div class="media-item"><img src="./media/video/spatial_photo.png" alt=""></div>
-                                <div class="media-item"><video autoplay muted loop playsinline>
-                                        <source src="./media/video/spatial_video.mp4" type="video/mp4">
-                                    </video></div>
-
-                            </div>
-                        </div>
+                    <div class="info-text">
+                        <h2 class="info-title">Let's create together!</h2>
+                        <p class="info-description">
+                            We are accepting applications for Holographic Video and Photo creation. If you are a
+                            volumetric
+                            studio with a backlog of footage we would like to work with you
+                            to give your footage a new novel purpose of use.
+                        </p>
                     </div>
                 </div>
             </section>
-        </div>
 
-        <div class="mobile-scroller"></div>
+        </main>
 
-        <section class="info-section">
-            <div class="info-container">
-                <div class="info-media">
-                    <video class="info-video" autoplay muted loop playsinline>
-                        <source src="./media/video/Holographic_company.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="info-text">
-                    <h2 class="info-title">Let's create together!</h2>
-                    <p class="info-description">
-                        We are accepting applications for Holographic Video and Photo creation. If you are a volumetric
-                        studio with a backlog of footage we would like to work with you
-                        to give your footage a new novel purpose of use.
-                    </p>
-                </div>
-            </div>
-        </section>
+        <footer class="launch-info">
+            <h2>Launching 11/27/2025</h2>
+            <p>On Meta Quest 3/S</p>
+        </footer>
 
-    </main>
+        <!-- Main site logic is now in a separate file -->
+        <script type="module" src="script.js"></script>
 
-    <footer class="launch-info">
-        <h2>Launching 11/27/2025</h2>
-        <p>On Meta Quest 3/S</p>
-    </footer>
-
- <!-- Main site logic is now in a separate file -->
-    <script type="module" src="script.js"></script>
-    
-    <!-- This new script initializes everything -->
-    <script type="module" src="loader-init.js"></script>
+        <!-- This new script initializes everything -->
+        <script type="module" src="loader-init.js"></script>
 </body>
 
 </html>

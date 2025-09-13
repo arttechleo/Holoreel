@@ -108,14 +108,56 @@ body {
 
 /* Hero */
 .visual-content { text-align: center; }
+
 .demo-reel {
     width: 550px;
     height: 950px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    position: relative; 
 }
+
+.video-overlay-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.video-overlay-wrapper iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    border: none;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* Make sure the overlay is on top of the iframe */
+    cursor: default; /* Change the cursor to indicate no interaction */
+}
+
+
 .demo-reel video { width: 100%; height: 100%; object-fit: cover; }
+
+.demo-reel iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%; /* Make the iframe fill the demo-reel entirely */
+    height: 100%; /* Make the iframe fill the demo-reel entirely */
+    transform: translate(-50%, -50%);
+    border: black;
+    /* You can apply border-radius here as well, though overflow: hidden on parent is more effective */
+    border-radius: 20px; /* Optional: Redundant if parent has overflow: hidden */
+}
 
 .scroll-indicator {
     position: absolute;
