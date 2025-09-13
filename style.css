@@ -20,20 +20,37 @@ body {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);
     padding: 1rem 2rem;
-    color: var(--accent-color);
-    font-weight: bold;
-    font-size: 1.2rem;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 100;
     box-sizing: border-box;
+    /* REFINED: Use flexbox for layout */
+    display: flex;
+    justify-content: space-between; /* Pushes items to the ends */
+    align-items: center;
 }
 
+/* NEW: Styles for the three navbar columns */
+.nav-left, .nav-right {
+    flex: 1; /* Each side takes up equal space */
+}
+
+.logo-container {
+    flex: 1; /* The center also takes up equal space */
+    display: flex;
+    justify-content: center; /* Horizontally centers the logo */
+}
+
+/* Optional: Style for the logo image itself */
 .logo img {
-    height: 50px; /* Adjust this value to get the perfect size */
-    width: auto;  /* This preserves the logo's original shape */
-    display: block; /* Removes any extra space that can appear below the image */
+    height: 40px;
+    width: auto;
+}
+
+.logotext img {
+  height: 50px;
+  width: auto;
 }
 
 .hero-section {
