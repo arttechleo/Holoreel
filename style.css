@@ -4,6 +4,7 @@
     --text-color: #e4e6eb;
     --accent-color: #ffffff;
     --surface-color: #1a1a1a;
+    --surface-light: #0A0A0A;
     --transition-speed: 0.5s;
 }
 
@@ -14,8 +15,9 @@ body {
     color: var(--text-color);
 }
 
+/* --- 2. LAYOUT & CORE STRUCTURE --- */
 .navbar {
-    background-color: rgba(17, 17, 17, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);
     padding: 1rem 2rem;
     color: var(--accent-color);
@@ -28,17 +30,22 @@ body {
     box-sizing: border-box;
 }
 
-/* --- 2. LAYOUT & STICKY BEHAVIOR --- */
+.logo img {
+    height: 50px; /* Adjust this value to get the perfect size */
+    width: auto;  /* This preserves the logo's original shape */
+    display: block; /* Removes any extra space that can appear below the image */
+}
+
 .hero-section {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* Needed for absolute positioning of the arrow */
+    position: relative;
 }
 
 .features-wrapper {
-    height: 400vh;
+    height: 500vh;
     position: relative;
 }
 
@@ -53,21 +60,19 @@ body {
     overflow: hidden;
 }
 
-/* --- 3. CONTENT STYLING --- */
+/* --- 3. COMPONENT STYLES --- */
+
+/* Hero */
 .visual-content { text-align: center; }
 .demo-reel {
-    width: 300px;
-    height: 550px;
-    border: 2px solid #333;
+    width: 600px;
+    height: 1050px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
 }
 .demo-reel video { width: 100%; height: 100%; object-fit: cover; }
-.headset-graphic { margin-top: 2rem; }
-.headset-graphic img { width: 150px; opacity: 0.8; }
 
-/* NEW: Scroll Indicator Arrow */
 .scroll-indicator {
     position: absolute;
     bottom: 30px;
@@ -86,7 +91,7 @@ body {
     50% { transform: translateX(-50%) translateY(-15px) rotate(-45deg); }
 }
 
-/* --- 4. INTERACTIVE SCROLLER (LAPTOP) --- */
+/* Interactive Scroller */
 .interactive-scroller {
     display: flex;
     max-width: 1400px;
@@ -121,6 +126,15 @@ body {
 
 .sticky-photo-container { flex-basis: 40%; }
 .sticky-photo img { max-width: 100%; border-radius: 12px; }
+/* NEW: Style for the 3D canvas */
+.sticky-photo canvas {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    cursor: grab;
+}
+
 
 .media-reel-container { flex-basis: 25%; }
 .media-reel { width: 100%; height: 250px; border-radius: 12px; overflow: hidden; background-color: var(--surface-color); }
@@ -128,17 +142,59 @@ body {
 .media-item { width: 100%; height: 250px; }
 .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- 5. MOBILE VIEW --- */
+/* Info Section */
+.info-section {
+    padding: 120px 2rem;
+    background-color: var(--surface-light);
+    border-top: 1px solid #222;
+}
+
+.info-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.info-media { flex: 1; }
+.info-text { flex: 1; }
+.info-image, .info-video {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+}
+.info-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    margin: 0 0 1rem 0;
+}
+.info-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 55ch;
+}
+
+/* Footer */
+.launch-info {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--surface-color);
+}
+.launch-info h2 { font-size: 2rem; color: var(--accent-color); margin: 0; }
+.launch-info p { margin-top: 0.5rem; }
+
+/* --- 4. RESPONSIVE & MOBILE STYLES --- */
 .mobile-scroller { display: none; }
 @media (max-width: 900px) {
     .features-wrapper { display: none; }
     
-    /* NEW: Interactive Snap Scroller for Mobile */
     .mobile-scroller {
         display: block;
-        scroll-snap-type: y mandatory; /* Enable vertical snapping */
-        overflow-y: scroll; /* Allow scrolling */
-        height: calc(100vh - 60px); /* Fill the screen below the navbar */
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        height: calc(100vh - 60px);
         padding-top: 5vh;
         box-sizing: border-box;
     }
@@ -147,8 +203,8 @@ body {
         border-radius: 20px;
         overflow: hidden;
         margin: 0 1rem 5vh 1rem;
-        height: calc(90vh - 60px); /* Make each slide nearly full height */
-        scroll-snap-align: start; /* Snap the top of each slide to the top */
+        height: calc(90vh - 60px);
+        scroll-snap-align: start;
         display: flex;
         flex-direction: column;
     }
@@ -165,72 +221,8 @@ body {
     .mobile-text p { font-size: 0.95rem; line-height: 1.5; margin: 0; }
 }
 
-/* --- 6. FOOTER --- */
-.launch-info {
-    text-align: center;
-    padding: 4rem 2rem;
-    background-color: var(--surface-color);
-}
-.launch-info h2 { font-size: 2rem; color: var(--accent-color); margin: 0; }
-.launch-info p { margin-top: 0.5rem; }
-
-/* --- REFINED: Info Section Styles with New Classes --- */
-.info-section {
-    padding: 120px 2rem;
-    background-color: var(--surface-light);
- 
-}
-
-/* --- 6. FOOTER --- */
-.launch-info {
-    text-align: center;
-    padding: 4rem 2rem;
-    background-color: black;
-}
-.launch-info h2 { font-size: 2rem; color: var(--accent-color); margin: 0; }
-.launch-info p { margin-top: 0.5rem; }
-
-
-
-.info-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-}
-
-.info-media {
-    flex: 1; /* Takes up half the space */
-}
-
-.info-text {
-    flex: 1; /* Takes up the other half */
-}
-
-/* Specific classes for your content */
-.info-image,
-.info-video {
-    width: 100%;
-    border-radius: 16px;
-    display: block;
-}
-
-.info-title {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--accent-color);
-    margin: 0 0 1rem 0;
-}
-
-.info-description {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    max-width: 55ch; /* Improves readability */
-}
-
-/* Responsive stacking for the info section */
 @media (max-width: 768px) {
+    /* Info Section Responsive */
     .info-section {
         padding: 80px 1rem;
     }
@@ -242,5 +234,3 @@ body {
         font-size: 2rem;
     }
 }
-
-
