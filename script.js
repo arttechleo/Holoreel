@@ -1,7 +1,89 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { initMobileModel } from './mobile-model.js'; // NEW: Import the mobile model function
 
-// NEW: All your main website logic is now in a single, exportable function.
+// All your existing code (initThreeJS, handleScrollAnimation, etc.) goes here, unchanged.
+// Your existing initThreeJS() function is preserved below.
+// ... (your existing code) ...
+
+// --- FINALIZED: THREE.JS 3D MODEL SETUP ---
+function initThreeJS() {
+    if (window.innerWidth <= 900) return; // Only run on desktop
+
+    const canvas = document.getElementById('quest-canvas');
+    if (!canvas) return;
+
+    // 1. Scene Setup
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true
+    });
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    camera.position.z = 3;
+
+    // 2. Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    directionalLight.position.set(5, 10, 7.5);
+    scene.add(directionalLight);
+
+    // 3. Model Loading
+    let headsetModel;
+    const loader = new GLTFLoader();
+    
+    loader.load('./media/3D/Quest3.glb', (gltf) => {
+        headsetModel = gltf.scene;
+        const box = new THREE.Box3().setFromObject(headsetModel);
+        const center = box.getCenter(new THREE.Vector3());
+        headsetModel.position.sub(center);
+        headsetModel.scale.set(5, 5, 5); 
+        scene.add(headsetModel);
+    }, undefined, (error) => {
+        console.error('An error happened while loading the model:', error);
+    });
+
+    // 4. Mouse Tracking for Rotation
+    let mouse = new THREE.Vector2();
+    window.addEventListener('mousemove', (event) => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+    
+    // 5. A dedicated function to handle resizing
+    function onResize() {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+
+        if (width > 0 && height > 0) {
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height, false); 
+        }
+    }
+
+    // 6. Animation Loop
+    function animate() {
+        requestAnimationFrame(animate);
+        onResize(); 
+
+        if (headsetModel) {
+            headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
+            headsetModel.rotation.x += (-mouse.y * 1.2 - headsetModel.rotation.x) * 0.05;
+        }
+        renderer.render(scene, camera);
+    }
+    
+    window.addEventListener('resize', onResize);
+    animate(); 
+}
+ 
+// ... all your other functions (handleScrollAnimation, updateVisuals, setupMobileView)
+// and all your existing DOM caching are here, unchanged.
+ 
 export function initializeApp() {
     // --- CACHE DOM ELEMENTS ---
     const promoVideo = document.getElementById('promo-video');
@@ -12,82 +94,6 @@ export function initializeApp() {
     const mediaStrip = document.querySelector('.media-strip');
     const mediaItems = document.querySelectorAll('.media-item');
     
-    // --- FINALIZED: THREE.JS 3D MODEL SETUP ---
-    function initThreeJS() {
-        if (window.innerWidth <= 900) return; // Only run on desktop
-
-        const canvas = document.getElementById('quest-canvas');
-        if (!canvas) return;
-
-        // 1. Scene Setup
-        const scene = new THREE.Scene();
-        const renderer = new THREE.WebGLRenderer({
-            canvas: canvas,
-            antialias: true,
-            alpha: true // Transparent background
-        });
-        renderer.setPixelRatio(window.devicePixelRatio);
-
-        const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-        camera.position.z = 3;
-
-        // 2. Lighting
-        scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-        directionalLight.position.set(5, 10, 7.5);
-        scene.add(directionalLight);
-
-        // 3. Model Loading
-        let headsetModel;
-        const loader = new GLTFLoader();
-        
-        loader.load('./media/3D/Quest3.glb', (gltf) => {
-            headsetModel = gltf.scene;
-            const box = new THREE.Box3().setFromObject(headsetModel);
-            const center = box.getCenter(new THREE.Vector3());
-            headsetModel.position.sub(center);
-            headsetModel.scale.set(5, 5, 5); 
-            scene.add(headsetModel);
-        }, undefined, (error) => {
-            console.error('An error happened while loading the model:', error);
-        });
-
-        // 4. Mouse Tracking for Rotation
-        let mouse = new THREE.Vector2();
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
-        
-        // 5. A dedicated function to handle resizing
-        function onResize() {
-            const width = canvas.clientWidth;
-            const height = canvas.clientHeight;
-
-            if (width > 0 && height > 0) {
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-                renderer.setSize(width, height, false); 
-            }
-        }
-
-        // 6. Animation Loop
-        function animate() {
-            requestAnimationFrame(animate);
-            onResize(); 
-
-            if (headsetModel) {
-                headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
-                headsetModel.rotation.x += (-mouse.y * 1.2 - headsetModel.rotation.x) * 0.05;
-            }
-            renderer.render(scene, camera);
-        }
-        
-        window.addEventListener('resize', onResize);
-        animate(); 
-    }
-    
-    // --- EXISTING SCROLL & MOBILE LOGIC ---
     let currentActiveIndex = -1;
 
     function handleScrollAnimation() {
@@ -154,7 +160,14 @@ export function initializeApp() {
             mobileContainer.appendChild(slide);
         });
     }
-
+    
+    // --- THIS IS THE ONLY CHANGE YOU NEED ---
+    if (window.innerWidth <= 900) {
+        initMobileModel(); // Call the new mobile function
+    } else {
+        initThreeJS(); // Call your existing desktop function
+    }
+    
     // --- INITIALIZE ---
     window.addEventListener('scroll', handleScrollAnimation);
     window.addEventListener('resize', () => {
@@ -164,5 +177,4 @@ export function initializeApp() {
 
     setupMobileView();
     handleScrollAnimation();
-    initThreeJS();
 }
