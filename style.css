@@ -421,7 +421,7 @@ body {
     .demo-reel {
         /* width: 100%; */
         width: 100vw;
-        height: 100vh;
+        height: 75vh;
         /* Make the video container full-width on mobile */
         border-radius: 0;
         /* Optional: Remove border-radius on smaller screens for a cleaner look */
@@ -435,7 +435,7 @@ body {
         /* aspect-ratio: 9 / 16; */
         position: static;
         width: 100vw;
-        height: 100vh;
+        height: 75vh;
     }
 
     .info-section {
