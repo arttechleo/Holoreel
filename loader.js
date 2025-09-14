@@ -1,6 +1,11 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// This function initializes and controls the entire loading screen animation.
+/**
+ * Initializes and controls the entire loading screen animation.
+ * @param {string} logoPath - The path to the logo image.
+ * @param {function} onAnimationComplete - Callback to fire when the animation is finished.
+ */
 export function initLoadingScreen(logoPath, onAnimationComplete) {
     const container = document.getElementById('loading-screen');
     if (!container) return;
@@ -17,7 +22,8 @@ export function initLoadingScreen(logoPath, onAnimationComplete) {
 
     let points;
     const loader = new THREE.TextureLoader();
-    let animationId; // This will store the ID of the animation frame
+    let animationId;
+    let startTime = null;
 
     // --- 2. Image Processing and Point Cloud Generation ---
     loader.load(logoPath, (texture) => {
@@ -93,19 +99,19 @@ export function initLoadingScreen(logoPath, onAnimationComplete) {
 
         points = new THREE.Points(geometry, material);
         scene.add(points);
-        animateProgress();
+        
+        // This is the CRUCIAL change.
+        // We now start the animation loop ONLY after the points object has been created.
+        requestAnimationFrame(animateProgress);
     });
 
     // --- 4. Animation and Cleanup ---
-    let progress = 0;
-    const animationDuration = 1200; // Total duration in milliseconds (e.g., 1.2 seconds)
-    let startTime = null;
-
     function animateProgress(timestamp) {
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
-        progress = Math.min(1.0, elapsed / animationDuration);
+        const progress = Math.min(1.0, elapsed / 1200); // 1200ms duration
 
+        // Make sure points is defined before trying to access its uniforms.
         if (points) {
             points.material.uniforms.uProgress.value = progress;
         }
@@ -115,17 +121,10 @@ export function initLoadingScreen(logoPath, onAnimationComplete) {
         if (progress < 1.0) {
             animationId = requestAnimationFrame(animateProgress);
         } else {
-            // Animation is complete, now we can safely hide the screen and stop the loop
             onAnimationComplete();
         }
     }
     
-    // The previous timeout logic is no longer needed.
-    // The onAnimationComplete callback is now handled directly inside animateProgress
-    // when the progress value hits 1.0.
-
-    // No need for a separate animate() function, as animateProgress handles rendering and
-    // the animation loop.
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();

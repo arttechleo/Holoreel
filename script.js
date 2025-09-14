@@ -17,7 +17,10 @@ export function initializeApp() {
         if (window.innerWidth <= 900) return; // Only run on desktop
 
         const canvas = document.getElementById('quest-canvas');
-        if (!canvas) return;
+        if (!canvas) {
+            console.error("Canvas element 'quest-canvas' not found.");
+            return;
+        }
 
         // 1. Scene Setup
         const scene = new THREE.Scene();
@@ -74,7 +77,6 @@ export function initializeApp() {
         // 6. Animation Loop
         function animate() {
             requestAnimationFrame(animate);
-            onResize(); 
 
             if (headsetModel) {
                 headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
@@ -83,8 +85,12 @@ export function initializeApp() {
             renderer.render(scene, camera);
         }
         
-        window.addEventListener('resize', onResize);
+        // ✨ FIX: Initialize the size once before the loop
+        onResize(); 
+        // ✨ FIX: Start the animation loop
         animate(); 
+
+        window.addEventListener('resize', onResize);
     }
     
     // --- EXISTING SCROLL & MOBILE LOGIC ---
