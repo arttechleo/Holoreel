@@ -304,6 +304,12 @@ body {
     background-color: black;
 }
 
+.launch-info .fine-print {
+    font-size: 0.8rem;
+    color: #a0a0a0; /* Optional: a lighter color for less prominence */
+    margin-top: 1rem;
+}
+
 .launch-info h2 {
     font-size: 3.0rem;
     color: var(--accent-color);
@@ -318,6 +324,10 @@ body {
 /* --- 4. RESPONSIVE & MOBILE STYLES --- */
 .mobile-scroller {
     display: none;
+}
+
+.mentions {
+    font-size: 5px;
 }
 
 @media (max-width: 900px) {
