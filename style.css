@@ -112,7 +112,6 @@ body {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
     margin: 0 auto;
     display: flex;
-    /* Use flexbox for centering the iframe */
     justify-content: center;
     align-items: center;
 }
@@ -269,11 +268,9 @@ body {
 }
 
 .info-media {
-    /* ✨ CHANGE: Add position: relative to set positioning context */
     position: relative;
     flex-basis: 50%;
     flex-shrink: 0;
-    /* ✨ CHANGE: Give the container a defined height */
     height: 85vh;
 }
 
@@ -283,7 +280,6 @@ body {
 
 .info-video {
     width: 100%;
-    /* ✨ CHANGE: Make the video fill its parent container */
     height: 100%;
     border-radius: 16px;
     display: block;
@@ -313,7 +309,6 @@ body {
 .launch-info .fine-print {
     font-size: 0.8rem;
     color: #a0a0a0;
-    /* Optional: a lighter color for less prominence */
     margin-top: 1rem;
 }
 
@@ -340,22 +335,13 @@ body {
     font-size: 5px;
 }
 
-/* ✨ CHANGE: Remove the display: none; rule from the main file.
-   The canvas will now be hidden by default on desktop due to its parent's flex layout,
-   and correctly displayed on mobile by the media query below.
-*/
-
-/* ✨ ADDED: Styles for the mobile canvas and button.
-These are crucial for layering and making the elements interactable.
-I've moved them here from your provided main stylesheet.
-*/
 #quest-canvas-mobile {
     position: absolute;
     top: 0;
-    left: 0;
+    bottom: 50%;
     width: 100%;
     height: 100%;
-    z-index: 2; /* Ensures the canvas is above the video */
+    z-index: 2;
 }
 
 #gyro-permission-btn {
@@ -363,11 +349,28 @@ I've moved them here from your provided main stylesheet.
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 3; /* Ensures the button is above both the canvas and video */
+    z-index: 3;
 }
 
 
 @media (max-width: 900px) {
+
+     .info-media {
+        position: relative;
+        flex-basis: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        /* ✨ REMOVED: height: 65vh; */
+        /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
+        min-height: 40vh; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* ✨ CHANGE: Use padding-top to create space above the headset */
+        padding-top: 15vh;
+        padding-bottom: 2rem;
+    }
+
     /* Hide the desktop scroller on mobile */
     .features-wrapper {
         display: none;
@@ -376,30 +379,29 @@ I've moved them here from your provided main stylesheet.
     /* Show the mobile scroller */
     .mobile-scroller {
         display: block;
-        height: 100vh;
+        height: 100%;
         overflow-y: scroll;
         scroll-snap-type: y mandatory;
         padding-top: 60px;
-        /* To account for the fixed navbar */
         box-sizing: border-box;
     }
 
     /* Style for each snapping slide */
     .mobile-slide {
-        height: calc(100vh - 60px);
-        /* Fill the rest of the viewport */
+        height: 60vh;
         scroll-snap-align: start;
         background-color: var(--surface-color);
-        border-radius: 20px;
+        border-radius: 25px;
         overflow: hidden;
         margin: 0 1rem 1rem 1rem;
         display: flex;
         flex-direction: column;
+        /* ✨ REMOVED: align-items: center; */
     }
 
     /* Style for the media and text areas within each slide */
     .mobile-media {
-        flex: 1.5;
+        flex: 1;
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -408,21 +410,23 @@ I've moved them here from your provided main stylesheet.
     }
 
     .mobile-media img,
-    .mobile-media video {
+    .mobile-media video,
+    .mobile-media canvas {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        /* Use 'contain' to ensure the whole video/image is visible */
-        border-radius: 12px;
+        object-fit: cover;
+        border-radius: 15px;
     }
 
     .mobile-text {
         flex: 1;
-        padding: 1.5rem;
+        /* ✨ CHANGED: Reduced padding */
+        padding: 1rem 1.5rem 1rem;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        text-align: center;
+        /* ✨ CHANGED: Align text to the left */
+        text-align: left;
+        /* ✨ REMOVED: justify-content: center; */
     }
 
     .mobile-text h3 {
@@ -440,28 +444,28 @@ I've moved them here from your provided main stylesheet.
 
     /* Existing styles for other sections */
     .info-media {
-        /* ✨ CHANGE: Re-position this container for mobile */
-        position: relative;
+    position: relative;
         flex-basis: 100%;
         max-width: 80vw;
         margin: 0 auto;
-        height: 65vh; /* ✨ CHANGE: Set a fixed height on mobile */
+        /* ✨ CHANGE: Change this to a responsive height, or remove it */
+        height: 50vh; /* Adjust this value as needed */
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-bottom: 2rem;
+        /* You can remove this or reduce it, depending on the desired spacing */
+        padding-bottom: 0; 
     }
 
     #quest-canvas-mobile {
-        /* ✨ CHANGE: Make sure the mobile canvas is visible and fills the container */
-        display: block; 
+        /* This is correct as it positions the canvas relative to .info-media */
         position: absolute;
-        top: 0;
-        left: 0;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 100%;
         height: 100%;
         z-index: 2;
-        cursor: grab;
     }
 
     .info-text {
@@ -471,26 +475,49 @@ I've moved them here from your provided main stylesheet.
 }
 
 @media (max-width: 768px) {
+
+
+        .info-media {
+        position: relative;
+        flex-basis: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        /* ✨ REMOVED: height: 65vh; */
+        /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
+        min-height: 40vh; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* ✨ CHANGE: Use padding-top to create space above the headset */
+        padding-top: 15vh;
+        padding-bottom: 2rem;
+    }
+
+        #quest-canvas-mobile {
+        /* This is correct as it positions the canvas relative to .info-media */
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        /* transform: translateX(-50%);
+        transform: translateY(-25%); */
+        transform: translate(-50%, 30%);
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+
+
     .mobile-slide {
         margin: 0 0.5rem 1rem 0.5rem;
-        /* Less margin on smaller screens */
     }
 
     .demo-reel {
-        /* width: 100%; */
         width: 100vw;
         height: 80vh;
-        /* Make the video container full-width on mobile */
         border-radius: 0;
-        /* Optional: Remove border-radius on smaller screens for a cleaner look */
     }
 
     .video-overlay-wrapper iframe {
-        /*
-        * On mobile, many videos are portrait (9:16). We can use a different aspect ratio here.
-        * Feel free to adjust based on the video content.
-        */
-        /* aspect-ratio: 9 / 16; */
         position: static;
         width: 100vw;
         height: 80vh;

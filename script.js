@@ -48,8 +48,10 @@ export function initializeApp() {
             headsetModel = gltf.scene;
             const box = new THREE.Box3().setFromObject(headsetModel);
             const center = box.getCenter(new THREE.Vector3());
+            headsetModel.scale.set(4, 4, 4); 
             headsetModel.position.sub(center);
-            headsetModel.scale.set(5, 5, 5); 
+            headsetModel.position.y -= 1.0; 
+            headsetModel.position.z -= 2.0;
             scene.add(headsetModel);
         }, undefined, (error) => {
             console.error('An error happened while loading the model:', error);
