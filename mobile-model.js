@@ -1,9 +1,12 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+/**
+ * Initializes and controls the 3D Quest model using the device's gyroscope.
+ * This function is designed to be called specifically on mobile devices.
+ */
 export function initMobileModel() {
-    // Change this line to target the new canvas ID
-    const canvas = document.getElementById('quest-canvas-mobile'); 
+    const canvas = document.getElementById('quest-canvas-mobile');
     if (!canvas) {
         console.error('Canvas element "quest-canvas-mobile" not found for the mobile model.');
         return;
@@ -20,6 +23,7 @@ export function initMobileModel() {
     });
     renderer.setPixelRatio(window.devicePixelRatio);
 
+    // Update renderer size based on canvas dimensions
     function onResize() {
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
@@ -31,11 +35,13 @@ export function initMobileModel() {
     }
     window.addEventListener('resize', onResize);
 
+    // --- Lighting ---
     scene.add(new THREE.AmbientLight(0xffffff, 0.9));
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(5, 10, 7.5);
     scene.add(directionalLight);
 
+    // --- Model Loading ---
     let headsetModel;
     const loader = new GLTFLoader();
     loader.load('./media/3D/Quest3.glb', (gltf) => {
@@ -49,19 +55,23 @@ export function initMobileModel() {
         console.error('An error happened while loading the model:', error);
     });
 
+    // --- Gyroscope Logic for Mobile Rotation ---
     let gyroData = { beta: 0, gamma: 0 };
     const DEG2RAD = Math.PI / 180;
 
     function handleGyroscope(event) {
+        // gamma: Left-to-right tilt in degrees
+        // beta: Front-to-back tilt in degrees
         gyroData.gamma = event.gamma;
         gyroData.beta = event.beta;
     }
 
+    // Check for iOS 13+ device orientation permission
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         const permissionButton = document.createElement('button');
         permissionButton.textContent = 'Allow Motion Access';
         Object.assign(permissionButton.style, {
-            position: 'absolute', // Changed to absolute to position within info-media or body
+            position: 'absolute',
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%)',
@@ -74,7 +84,6 @@ export function initMobileModel() {
             color: 'white',
             cursor: 'pointer'
         });
-        // Append to the parent of the canvas, or a specific container
         canvas.parentElement.appendChild(permissionButton);
 
         permissionButton.addEventListener('click', () => {
@@ -88,23 +97,37 @@ export function initMobileModel() {
                 .catch(console.error);
         });
     } else {
+        // Non-iOS 13+ devices can just add the listener
         window.addEventListener('deviceorientation', handleGyroscope);
     }
 
+    // --- NEW ANIMATION LOGIC ---
+    // These variables control the feel of the movement
+    const DAMPING_FACTOR = 0.005; // Adjust this to control how much the model moves
+    const MAX_ROTATION_RADIANS = 0.2; // Maximum rotation in either direction (in radians)
+
+    // --- Animation Loop ---
     function animate() {
         requestAnimationFrame(animate);
 
         if (headsetModel) {
-            const targetRotationY = gyroData.gamma * DEG2RAD;
-            const targetRotationX = gyroData.beta * DEG2RAD;
-            
-            headsetModel.rotation.y += (targetRotationY - headsetModel.rotation.y) * 0.1;
-            headsetModel.rotation.x += (targetRotationX - headsetModel.rotation.x) * 0.1;
+            // Calculate the target rotation based on gyro data and damping
+            const targetRotationY = gyroData.gamma * DEG2RAD * DAMPING_FACTOR;
+            const targetRotationX = gyroData.beta * DEG2RAD * DAMPING_FACTOR;
+
+            // Clamp the rotation values to prevent excessive movement
+            const clampedY = Math.max(Math.min(targetRotationY, MAX_ROTATION_RADIANS), -MAX_ROTATION_RADIANS);
+            const clampedX = Math.max(Math.min(targetRotationX, MAX_ROTATION_RADIANS), -MAX_ROTATION_RADIANS);
+
+            // Smoothly move the model towards the clamped rotation
+            headsetModel.rotation.y += (clampedY - headsetModel.rotation.y) * 0.1;
+            headsetModel.rotation.x += (clampedX - headsetModel.rotation.x) * 0.1;
         }
 
         renderer.render(scene, camera);
     }
     
+    // Initial size setup and animation start
     onResize();
     animate();
 }
