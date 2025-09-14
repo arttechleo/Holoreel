@@ -490,13 +490,4 @@ body {
         line-height: 1.5;
         margin: 0;
     }
-
-     .mobile-scroller {
-        display: block;
-        scroll-snap-type: y mandatory;
-        overflow-y: scroll;
-        height: calc(90vh - 60px);
-        padding-top: 10vh;
-        box-sizing: border-box;
-    }
 }
