@@ -34,28 +34,21 @@
             </div>
         </nav>
 
-
         <main>
             <section class="hero-section">
                 <div class="visual-content">
                     <div class="demo-reel">
                         <div class="video-overlay-wrapper">
-                            <div class="video-overlay-wrapper">
-                                <div class="video-overlay-wrapper">
-                                    <iframe id="youtube-promo-video"
-                                        src="https://www.youtube.com/embed/frvPnPVq7kI?autoplay=1&mute=1&loop=1&playlist=frvPnPVq7kI&controls=0&modestbranding=1"
-                                        frameborder="0"
-                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"
-                                        allowfullscreen>
-                                    </iframe>
-                                </div>
-                                <div class="video-overlay"></div>
-                            </div>
+                            <iframe id="youtube-promo-video"
+                                src="https://www.youtube.com/embed/frvPnPVq7kI?autoplay=1&mute=1&loop=1&playlist=frvPnPVq7kI&controls=0&modestbranding=1"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"
+                                allowfullscreen>
+                            </iframe>
                             <div class="video-overlay"></div>
                         </div>
                     </div>
                 </div>
-
                 <div class="scroll-indicator"></div>
             </section>
 
@@ -111,7 +104,6 @@
                                     <div class="media-item"><video autoplay muted loop playsinline>
                                             <source src="./media/video/spatial_video.mp4" type="video/mp4">
                                         </video></div>
-
                                 </div>
                             </div>
                         </div>
@@ -128,10 +120,9 @@
                             <source src="./media/video/Holographic_company.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <canvas id="quest-canvas-mobile"></canvas>
+                        <button id="gyro-permission-btn" style="display: none;">Allow Motion Access</button>
                     </div>
-
-                    <canvas id="quest-canvas-mobile"></canvas>
-                    <button id="gyro-permission-btn" style="display: none;">Allow Motion Access</button>
                     
                     <div class="info-text">
                         <h2 class="info-title">Holoreel?</h2>
@@ -145,12 +136,10 @@
                         <p class="info-description">
                             Powered by Gracia AI on the lookout for production requests of HoloPhotos & HoloVideos.
                         </p>
-
                         <h2 class="info-title">Welcome to the Holographic Future!</h2>
                     </div>
                 </div>
             </section>
-
         </main>
 
         <footer class="launch-info">
@@ -160,10 +149,10 @@
                 Apple - Spatial Photo, Wistlabs - Spatial Video, Meta Quest 3</p>
         </footer>
 
-
         <script type="module" src="script.js"></script>
-
         <script type="module" src="loader-init.js"></script>
+    </div>
+
 </body>
 
 </html>

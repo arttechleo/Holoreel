@@ -217,20 +217,7 @@ body {
     border-radius: 12px;
 }
 
-#quest-canvas-mobile {
-    display: none;
-    /* Hidden by default */
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    /* Maintain aspect ratio */
-    cursor: grab;
-    /* Optional: Add some padding/margin if needed */
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-/* Style for the 3D canvas */
+/* Styles for the 3D canvas (desktop) */
 .sticky-photo canvas {
     display: block;
     width: 100% !important;
@@ -282,8 +269,12 @@ body {
 }
 
 .info-media {
+    /* ✨ CHANGE: Add position: relative to set positioning context */
+    position: relative;
     flex-basis: 50%;
     flex-shrink: 0;
+    /* ✨ CHANGE: Give the container a defined height */
+    height: 85vh;
 }
 
 .info-text {
@@ -292,9 +283,11 @@ body {
 
 .info-video {
     width: 100%;
-    height: 85vh;
+    /* ✨ CHANGE: Make the video fill its parent container */
+    height: 100%;
     border-radius: 16px;
     display: block;
+    object-fit:cover;
 }
 
 .info-title {
@@ -347,8 +340,34 @@ body {
     font-size: 5px;
 }
 
-@media (max-width: 900px) {
+/* ✨ CHANGE: Remove the display: none; rule from the main file.
+   The canvas will now be hidden by default on desktop due to its parent's flex layout,
+   and correctly displayed on mobile by the media query below.
+*/
 
+/* ✨ ADDED: Styles for the mobile canvas and button.
+These are crucial for layering and making the elements interactable.
+I've moved them here from your provided main stylesheet.
+*/
+#quest-canvas-mobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Ensures the canvas is above the video */
+}
+
+#gyro-permission-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3; /* Ensures the button is above both the canvas and video */
+}
+
+
+@media (max-width: 900px) {
     /* Hide the desktop scroller on mobile */
     .features-wrapper {
         display: none;
@@ -421,10 +440,12 @@ body {
 
     /* Existing styles for other sections */
     .info-media {
+        /* ✨ CHANGE: Re-position this container for mobile */
+        position: relative;
         flex-basis: 100%;
         max-width: 80vw;
         margin: 0 auto;
-        height: auto;
+        height: 65vh; /* ✨ CHANGE: Set a fixed height on mobile */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -432,17 +453,21 @@ body {
     }
 
     #quest-canvas-mobile {
-        display: block;
-        height: 60vh;
-        max-width: 100%;
-        margin: 0;
+        /* ✨ CHANGE: Make sure the mobile canvas is visible and fills the container */
+        display: block; 
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        cursor: grab;
     }
 
     .info-text {
         padding: 0 1rem;
         margin-top: -50px;
     }
-
 }
 
 @media (max-width: 768px) {
@@ -490,11 +515,15 @@ body {
         font-size: 2rem;
     }
 
-    .info-media,
-    .info-video {
+    .info-media {
         width: 100%;
         max-width: 500px;
         height: 65vh;
+    }
+
+    .info-video {
+        width: 100%;
+        height: 100%;
     }
 
     .mobile-text {
@@ -517,10 +546,4 @@ body {
         line-height: 1.5;
         margin: 0;
     }
-
-    #quest-canvas-mobile {
-        height: 50vh;
-        /* Adjust height for smaller screens */
-    }
-
 }
