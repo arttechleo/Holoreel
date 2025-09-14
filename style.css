@@ -105,50 +105,22 @@ body {
 }
 
 .demo-reel {
-    max-width: 100%;
-    width: 90%;
-    /* Keep this for landscape video */
-    aspect-ratio: 9 /16;
-    height: auto;
+    width: 100%;
+    height: 90%;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-    position: relative;
     margin: 0 auto;
+    display: flex; /* Use flexbox for centering the iframe */
+    justify-content: center;
+    align-items: center;
 }
 
-.video-overlay-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.video-overlay-wrapper iframe {
-    position: relative;
-    /* top: 50%;
-    left: 50%; */
-    width: 80vw;
+/* Updated iframe styles */
+.demo-reel iframe {
+    width: 90vw;
     height: 80vh;
-    transform: translate(-5%, 75%);
     border: none;
-    /* border-radius: 20px; */
-}
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    /* Change this to a negative number */
-    cursor: default;
-}
-
-.demo-reel video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .scroll-indicator {
@@ -421,12 +393,35 @@ body {
         line-height: 1.5;
         margin: 0;
     }
+
+      .demo-reel {
+        /* width: 100%; */
+        width: 100vw;
+        height: 100vh;
+        /* Make the video container full-width on mobile */
+        border-radius: 0;
+        /* Optional: Remove border-radius on smaller screens for a cleaner look */
+    }
+
+        .video-overlay-wrapper iframe {
+        /*
+        * On mobile, many videos are portrait (9:16). We can use a different aspect ratio here.
+        * Feel free to adjust based on the video content.
+        */
+        /* aspect-ratio: 9 / 16; */
+        position: static;
+        width: 100vw;
+        height: 100vh;
+    }
+
 }
 
 @media (max-width: 768px) {
-
+    /* Update this section */
     .demo-reel {
-        width: 100%;
+        /* width: 100%; */
+        width: 100vw;
+        height: 100vh;
         /* Make the video container full-width on mobile */
         border-radius: 0;
         /* Optional: Remove border-radius on smaller screens for a cleaner look */
@@ -434,13 +429,13 @@ body {
 
     .video-overlay-wrapper iframe {
         /*
-                * On mobile, many videos are portrait (9:16). We can use a different aspect ratio here.
-                * Feel free to adjust based on the video content.
-                */
-        aspect-ratio: 9 / 16;
+        * On mobile, many videos are portrait (9:16). We can use a different aspect ratio here.
+        * Feel free to adjust based on the video content.
+        */
+        /* aspect-ratio: 9 / 16; */
         position: static;
-        width: 100%;
-        height: auto;
+        width: 100vw;
+        height: 100vh;
     }
 
     .info-section {
@@ -462,9 +457,4 @@ body {
         width: 100%;
         max-width: 500px;
     }
-
-    .hero-section {
-        height: 10vh;
-    }
-
 }
