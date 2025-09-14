@@ -442,4 +442,9 @@ body {
         width: 100%;
         max-width: 500px;
     }
+
+    .hero-section {
+    height: 10vh;
+}
+
 }
