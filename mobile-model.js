@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DeviceOrientationControls } from 'three/addons/controls/DeviceOrientationControls.js';
 
 /**
  * Initializes and controls the 3D Quest model using the device's gyroscope.
@@ -8,11 +7,14 @@ import { DeviceOrientationControls } from 'three/addons/controls/DeviceOrientati
  */
 export function initMobileModel() {
     const canvas = document.getElementById('quest-canvas-mobile');
-    if (!canvas) {
-        console.error('Canvas element "quest-canvas-mobile" not found for the mobile model.');
+    const container = document.querySelector('.info-media'); // Select the container for the button
+
+    if (!canvas || !container) {
+        console.error('Canvas or container element not found for the mobile model.');
         return;
     }
 
+    // --- Scene, Camera, and Renderer Setup ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
     camera.position.z = 2.5;
@@ -24,18 +26,6 @@ export function initMobileModel() {
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
-
-    // Update renderer size based on canvas dimensions
-    function onResize() {
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        if (width > 0 && height > 0) {
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height, false);
-        }
-    }
-    window.addEventListener('resize', onResize);
 
     // --- Lighting ---
     scene.add(new THREE.AmbientLight(0xffffff, 0.9));
@@ -58,56 +48,88 @@ export function initMobileModel() {
     });
 
     // --- Gyroscope Control Setup ---
-    // Use the official Three.js DeviceOrientationControls for reliable gyroscope tracking
-    const controls = new DeviceOrientationControls(camera);
+    const isIOS13 = typeof DeviceOrientationEvent.requestPermission === 'function';
+    let isMotionGranted = false;
 
-    // Check for iOS 13+ device orientation permission
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        const permissionButton = document.createElement('button');
-        permissionButton.textContent = 'Allow Motion Access';
-        Object.assign(permissionButton.style, {
-            position: 'absolute',
-            bottom: '20px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: '999',
-            padding: '12px 24px',
-            fontSize: '1em',
-            border: 'none',
-            borderRadius: '8px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            cursor: 'pointer'
-        });
-        canvas.parentElement.appendChild(permissionButton);
+    // Create a user-facing button to prompt for motion access
+    const permissionButton = document.createElement('button');
+    permissionButton.textContent = 'Enable Motion View';
+    Object.assign(permissionButton.style, {
+        position: 'absolute',
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: '10',
+        padding: '12px 24px',
+        fontSize: '1em',
+        border: 'none',
+        borderRadius: '8px',
+        backgroundColor: '#007bff',
+        color: 'white',
+        cursor: 'pointer',
+        display: 'none' // Initially hidden
+    });
+    container.appendChild(permissionButton);
 
+    const onDeviceOrientation = (event) => {
+        if (headsetModel) {
+            // Use alpha and beta for rotation
+            const alphaRad = THREE.MathUtils.degToRad(event.alpha);
+            const betaRad = THREE.MathUtils.degToRad(event.beta);
+
+            // Apply rotation directly to the model
+            headsetModel.rotation.order = 'YXZ'; // Important for correct rotation
+            headsetModel.rotation.y = alphaRad;
+            headsetModel.rotation.x = betaRad;
+        }
+    };
+
+    if (isIOS13) {
+        permissionButton.style.display = 'block'; // Show the button for iOS users
         permissionButton.addEventListener('click', () => {
             DeviceOrientationEvent.requestPermission()
                 .then(permissionState => {
                     if (permissionState === 'granted') {
-                        controls.connect(); // Connect controls only after permission is granted
+                        isMotionGranted = true;
+                        window.addEventListener('deviceorientation', onDeviceOrientation, true);
                         permissionButton.remove();
+                    } else {
+                        console.log('Motion permission denied.');
                     }
                 })
                 .catch(console.error);
         });
     } else {
-        // Non-iOS 13+ devices can just connect the controls directly
-        controls.connect();
+        // For non-iOS devices, permission is not required
+        isMotionGranted = true;
+        window.addEventListener('deviceorientation', onDeviceOrientation, true);
     }
 
     // --- Animation Loop ---
     function animate() {
         requestAnimationFrame(animate);
 
-        // Update the controls. This handles the gyroscope-based camera rotation.
-        controls.update();
+        // We no longer need controls.update() as we handle rotation manually
+        // if (isMotionGranted) {
+        //     // The event listener handles the rotation, so nothing to do here
+        // }
 
         // Render the scene
         renderer.render(scene, camera);
     }
 
-    // Initial size setup and animation start
-    onResize();
-    animate();
+    // --- Event Listeners and Initial Setup ---
+    function onResize() {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        if (width > 0 && height > 0) {
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height, false);
+        }
+    }
+    window.addEventListener('resize', onResize);
+
+    onResize(); // Set initial size
+    animate(); // Start the animation loop
 }
