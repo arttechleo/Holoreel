@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- <title>Holoreel</title> -->
+    <title>Holoreel</title>
+    <link rel="icon" type="image/x-icon" href="./media/logo/favicon_image.png">
 
     <script type="importmap">
         {
@@ -22,10 +23,8 @@
 
 <body>
 
-    <!-- NEW: Loading Screen Container -->
     <div id="loading-screen"></div>
 
-    <!-- NEW: Wrapper for all your main site content -->
     <div id="main-content" class="hidden">
         <nav class="navbar">
             <div class="logo-container">
@@ -100,18 +99,18 @@
                             <div class="media-reel">
                                 <div class="media-strip">
                                     <div class="media-item"><video autoplay muted loop playsinline>
-                                            <source src="./media/video/Elden_Ring_GS_capture.mp4" type="video/mp4">
-                                        </video></div>
+                                                <source src="./media/video/Elden_Ring_GS_capture.mp4" type="video/mp4">
+                                            </video></div>
                                     <div class="media-item"><video autoplay muted loop playsinline>
-                                            <source src="./media/video/holophoto.mp4" type="video/mp4">
-                                        </video></div>
+                                                <source src="./media/video/holophoto.mp4" type="video/mp4">
+                                            </video></div>
                                     <div class="media-item"><video autoplay muted loop playsinline>
-                                            <source src="./media/video/Holovideos.mp4" type="video/mp4">
-                                        </video></div>
+                                                <source src="./media/video/Holovideos.mp4" type="video/mp4">
+                                            </video></div>
                                     <div class="media-item"><img src="./media/video/spatial_photo.png" alt=""></div>
                                     <div class="media-item"><video autoplay muted loop playsinline>
-                                            <source src="./media/video/spatial_video.mp4" type="video/mp4">
-                                        </video></div>
+                                                <source src="./media/video/spatial_video.mp4" type="video/mp4">
+                                            </video></div>
 
                                 </div>
                             </div>
@@ -130,14 +129,21 @@
                             Your browser does not support the video tag.
                         </video>
                     </div>
+                    <canvas id="quest-canvas-mobile"></canvas>
                     <div class="info-text">
-                        <h2 class="info-title">Let's create together!</h2>
+                        <h2 class="info-title">Holoreel?</h2>
                         <p class="info-description">
-                            We are accepting applications for Holographic Video and Photo creation. If you are a
-                            volumetric
-                            studio with a backlog of footage we would like to work with you
-                            to give your footage a new novel purpose of use.
+                            Platform building futuristic Spatial viewer.
                         </p>
+                        <p class="info-description">
+                            Looking for 3D models, 3D animated models, 3D Gaussian Splatting (HoloPhotos), 4D Volumetric
+                            Gaussian Splatting (Holovideos), Spatial Photos, Panoramas, Spatial Videos.
+                        </p>
+                        <p class="info-description">
+                            Powered by Gracia AI on the lookout for production requests of HoloPhotos & HoloVideos.
+                        </p>
+
+                    <h2 class="info-title">Welcome to the Holographic Future!</h2>
                     </div>
                 </div>
             </section>
@@ -147,14 +153,13 @@
         <footer class="launch-info">
             <h2>Launching 11/27/2025</h2>
             <p>On Meta Quest 3/S</p>
-            <p class="fine-print">Honorable mentions: Gracia AI, SuperSplat user kalmarv, BMW Isetta @ Isetta Cafe, Apple - Spatial Photo, Wistlabs - Spatial Video, Meta Quest 3</p>
+            <p class="fine-print">Honorable mentions: Gracia AI, SuperSplat user kalmarv, BMW Isetta @ Isetta Cafe,
+                Apple - Spatial Photo, Wistlabs - Spatial Video, Meta Quest 3</p>
         </footer>
 
 
-        <!-- Main site logic is now in a separate file -->
         <script type="module" src="script.js"></script>
 
-        <!-- This new script initializes everything -->
         <script type="module" src="loader-init.js"></script>
 </body>
 

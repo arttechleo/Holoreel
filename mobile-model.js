@@ -1,14 +1,15 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DeviceOrientationControls } from 'three/addons/controls/DeviceOrientationControls.js';
 
 /**
  * Initializes and controls the 3D Quest model using the device's gyroscope.
  * This function is designed to be called specifically on mobile devices.
  */
 export function initMobileModel() {
-    const canvas = document.getElementById('quest-canvas');
+    const canvas = document.getElementById('quest-canvas-mobile');
     if (!canvas) {
-        console.error('Canvas element not found for the mobile model.');
+        console.error('Canvas element "quest-canvas-mobile" not found for the mobile model.');
         return;
     }
 
@@ -22,6 +23,7 @@ export function initMobileModel() {
         alpha: true
     });
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
     // Update renderer size based on canvas dimensions
     function onResize() {
@@ -55,23 +57,16 @@ export function initMobileModel() {
         console.error('An error happened while loading the model:', error);
     });
 
-    // --- Gyroscope Logic for Mobile Rotation ---
-    let gyroData = { beta: 0, gamma: 0 };
-    const DEG2RAD = Math.PI / 180;
-
-    function handleGyroscope(event) {
-        // gamma: Left-to-right tilt in degrees
-        // beta: Front-to-back tilt in degrees
-        gyroData.gamma = event.gamma;
-        gyroData.beta = event.beta;
-    }
+    // --- Gyroscope Control Setup ---
+    // Use the official Three.js DeviceOrientationControls for reliable gyroscope tracking
+    const controls = new DeviceOrientationControls(camera);
 
     // Check for iOS 13+ device orientation permission
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         const permissionButton = document.createElement('button');
         permissionButton.textContent = 'Allow Motion Access';
         Object.assign(permissionButton.style, {
-            position: 'fixed',
+            position: 'absolute',
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%)',
@@ -84,39 +79,34 @@ export function initMobileModel() {
             color: 'white',
             cursor: 'pointer'
         });
-        document.body.appendChild(permissionButton);
+        canvas.parentElement.appendChild(permissionButton);
 
         permissionButton.addEventListener('click', () => {
             DeviceOrientationEvent.requestPermission()
                 .then(permissionState => {
                     if (permissionState === 'granted') {
-                        window.addEventListener('deviceorientation', handleGyroscope);
+                        controls.connect(); // Connect controls only after permission is granted
                         permissionButton.remove();
                     }
                 })
                 .catch(console.error);
         });
     } else {
-        // Non-iOS 13+ devices can just add the listener
-        window.addEventListener('deviceorientation', handleGyroscope);
+        // Non-iOS 13+ devices can just connect the controls directly
+        controls.connect();
     }
 
     // --- Animation Loop ---
     function animate() {
         requestAnimationFrame(animate);
 
-        if (headsetModel) {
-            // Smoothly interpolate the model's rotation
-            const targetRotationY = gyroData.gamma * DEG2RAD;
-            const targetRotationX = gyroData.beta * DEG2RAD;
-            
-            headsetModel.rotation.y += (targetRotationY - headsetModel.rotation.y) * 0.1;
-            headsetModel.rotation.x += (targetRotationX - headsetModel.rotation.x) * 0.1;
-        }
+        // Update the controls. This handles the gyroscope-based camera rotation.
+        controls.update();
 
+        // Render the scene
         renderer.render(scene, camera);
     }
-    
+
     // Initial size setup and animation start
     onResize();
     animate();
