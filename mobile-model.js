@@ -103,8 +103,11 @@ export function initMobileModel() {
 
     // --- NEW ANIMATION LOGIC ---
     // These variables control the feel of the movement
-    const DAMPING_FACTOR = 0.005; // Adjust this to control how much the model moves
-    const MAX_ROTATION_RADIANS = 0.2; // Maximum rotation in either direction (in radians)
+    const DAMPING_FACTOR = 0.01; // Increased to allow for more noticeable movement
+    const MAX_ROTATION_RADIANS = 0.4; // Increased to allow for a larger range of motion
+    // This value sets the default "upwards" look of the model.
+    // -0.8 radians is roughly a 45-degree angle upwards.
+    const BASE_ROTATION_X = -0.8; 
 
     // --- Animation Loop ---
     function animate() {
@@ -112,8 +115,9 @@ export function initMobileModel() {
 
         if (headsetModel) {
             // Calculate the target rotation based on gyro data and damping
+            // The X rotation is now added to the base rotation to make it look upwards
             const targetRotationY = gyroData.gamma * DEG2RAD * DAMPING_FACTOR;
-            const targetRotationX = gyroData.beta * DEG2RAD * DAMPING_FACTOR;
+            const targetRotationX = BASE_ROTATION_X + (gyroData.beta * DEG2RAD * DAMPING_FACTOR);
 
             // Clamp the rotation values to prevent excessive movement
             const clampedY = Math.max(Math.min(targetRotationY, MAX_ROTATION_RADIANS), -MAX_ROTATION_RADIANS);
