@@ -32,7 +32,8 @@ body {
 
 #loading-screen.fade-out {
     opacity: 0;
-    pointer-events: none; /* Allows clicks to pass through during fade */
+    pointer-events: none;
+    /* Allows clicks to pass through during fade */
 }
 
 
@@ -54,19 +55,24 @@ body {
     box-sizing: border-box;
     /* REFINED: Use flexbox for layout */
     display: flex;
-    justify-content: space-between; /* Pushes items to the ends */
+    justify-content: space-between;
+    /* Pushes items to the ends */
     align-items: center;
 }
 
 /* NEW: Styles for the three navbar columns */
-.nav-left, .nav-right {
-    flex: 1; /* Each side takes up equal space */
+.nav-left,
+.nav-right {
+    flex: 1;
+    /* Each side takes up equal space */
 }
 
 .logo-container {
-    flex: 1; /* The center also takes up equal space */
+    flex: 1;
+    /* The center also takes up equal space */
     display: flex;
-    justify-content: center; /* Horizontally centers the logo */
+    justify-content: center;
+    /* Horizontally centers the logo */
 }
 
 /* Optional: Style for the logo image itself */
@@ -76,8 +82,8 @@ body {
 }
 
 .logotext img {
-  height: 50px;
-  width: auto;
+    height: 50px;
+    width: auto;
 }
 
 .hero-section {
@@ -107,15 +113,27 @@ body {
 /* --- 3. COMPONENT STYLES --- */
 
 /* Hero */
-.visual-content { text-align: center; }
+.visual-content {
+    text-align: center;
+}
 
 .demo-reel {
-    width: 550px;
-    height: 950px;
+    /* Use max-width for control, and a percentage for responsiveness */
+    max-width: 550px;
+    width: 90%;
+
+    /* Use a fixed aspect ratio for height to maintain video shape */
+    /* This creates a 16:9 aspect ratio, adjust as needed for vertical video */
+    aspect-ratio: 9 / 16;
+    height: auto;
+
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-    position: relative; 
+    position: relative;
+
+    /* Center it horizontally */
+    margin: 0 auto;
 }
 
 .video-overlay-wrapper {
@@ -140,23 +158,26 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10; /* Make sure the overlay is on top of the iframe */
-    cursor: default; /* Change the cursor to indicate no interaction */
+    z-index: 10;
+    /* Make sure the overlay is on top of the iframe */
+    cursor: default;
+    /* Change the cursor to indicate no interaction */
 }
 
 
-.demo-reel video { width: 100%; height: 100%; object-fit: cover; }
+.demo-reel video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 .demo-reel iframe {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%; /* Make the iframe fill the demo-reel entirely */
-    height: 100%; /* Make the iframe fill the demo-reel entirely */
-    transform: translate(-50%, -50%);
-    border: black;
-    /* You can apply border-radius here as well, though overflow: hidden on parent is more effective */
-    border-radius: 20px; /* Optional: Redundant if parent has overflow: hidden */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 .scroll-indicator {
@@ -173,12 +194,20 @@ body {
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0) rotate(-45deg); }
-    50% { transform: translateX(-50%) translateY(-15px) rotate(-45deg); }
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0) rotate(-45deg);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-15px) rotate(-45deg);
+    }
 }
 
 /* Interactive Scroller */
 .interactive-scroller {
+    /* Retain desktop styles */
     display: flex;
     max-width: 1400px;
     width: 100%;
@@ -189,15 +218,28 @@ body {
     box-sizing: border-box;
 }
 
-.text-reel-container, .sticky-photo-container, .media-reel-container {
+.text-reel-container,
+.sticky-photo-container,
+.media-reel-container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.text-reel-container { flex-basis: 25%; }
-.text-reel { height: 250px; width: 100%; overflow: hidden; }
-.text-strip { transition: transform var(--transition-speed) ease-out; }
+.text-reel-container {
+    flex-basis: 25%;
+}
+
+.text-reel {
+    height: 250px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.text-strip {
+    transition: transform var(--transition-speed) ease-out;
+}
+
 .text-item {
     height: 250px;
     display: flex;
@@ -206,12 +248,32 @@ body {
     transition: opacity var(--transition-speed) ease-in-out;
     opacity: 0.3;
 }
-.text-item.active { opacity: 1; }
-.text-item h3 { font-size: 2.2rem; color: var(--accent-color); margin: 0 0 0.5rem 0; font-weight: 900; }
-.text-item p { font-size: 1.1rem; line-height: 1.6; }
 
-.sticky-photo-container { flex-basis: 40%; }
-.sticky-photo img { max-width: 100%; border-radius: 12px; }
+.text-item.active {
+    opacity: 1;
+}
+
+.text-item h3 {
+    font-size: 2.2rem;
+    color: var(--accent-color);
+    margin: 0 0 0.5rem 0;
+    font-weight: 900;
+}
+
+.text-item p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.sticky-photo-container {
+    flex-basis: 40%;
+}
+
+.sticky-photo img {
+    max-width: 100%;
+    border-radius: 12px;
+}
+
 /* NEW: Style for the 3D canvas */
 .sticky-photo canvas {
     display: block;
@@ -222,16 +284,39 @@ body {
 }
 
 
-.media-reel-container { flex-basis: 25%; }
-.media-reel { width: 100%; height: 250px; border-radius: 12px; overflow: hidden; background-color: var(--surface-color); }
-.media-strip { transition: transform var(--transition-speed) ease-out; }
-.media-item { width: 100%; height: 250px; }
-.media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+.media-reel-container {
+    flex-basis: 25%;
+}
+
+.media-reel {
+    width: 100%;
+    height: 250px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--surface-color);
+}
+
+.media-strip {
+    transition: transform var(--transition-speed) ease-out;
+}
+
+.media-item {
+    width: 100%;
+    height: 250px;
+}
+
+.media-item img,
+.media-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 /* Info Section */
 .info-section {
     padding: 120px 2rem;
-    background-color: black; /* Example background */
+    background-color: black;
+    /* Example background */
 }
 
 .info-container {
@@ -247,7 +332,8 @@ body {
     --media-column-width: 50%;
 
     flex-basis: var(--media-column-width);
-    flex-shrink: 0; /* Prevents the video column from shrinking */
+    flex-shrink: 0;
+    /* Prevents the video column from shrinking */
 }
 
 .info-text {
@@ -255,7 +341,8 @@ body {
 }
 
 .info-video {
-    width: 50%; /* Makes the video fill its column */
+    width: 50%;
+    /* Makes the video fill its column */
     border-radius: 16px;
     display: block;
 }
@@ -279,14 +366,45 @@ body {
     padding: 4rem 4rem;
     background-color: black;
 }
-.launch-info h2 { font-size: 3.0rem; color: var(--accent-color); margin: 0; }
-.launch-info p {font-size: 1.5rem; margin-top: 3rem; }
+
+.launch-info h2 {
+    font-size: 3.0rem;
+    color: var(--accent-color);
+    margin: 0;
+}
+
+.launch-info p {
+    font-size: 1.5rem;
+    margin-top: 3rem;
+}
 
 /* --- 4. RESPONSIVE & MOBILE STYLES --- */
-.mobile-scroller { display: none; }
+.mobile-scroller {
+    display: none;
+}
+
 @media (max-width: 900px) {
-    .features-wrapper { display: none; }
-    
+    .interactive-scroller {
+        /* On mobile, remove flexbox and adjust padding */
+        display: block;
+        padding: 0 1rem;
+    }
+
+
+    .text-reel-container,
+    .sticky-photo-container,
+    .media-reel-container {
+        max-width: 500px;
+        /* Adjust as needed */
+        margin: 0 auto;
+        padding-bottom: 2rem;
+        /* Add some space between blocks */
+    }
+
+    .features-wrapper {
+        display: none;
+    }
+
     .mobile-scroller {
         display: block;
         scroll-snap-type: y mandatory;
@@ -295,6 +413,7 @@ body {
         padding-top: 5vh;
         box-sizing: border-box;
     }
+
     .mobile-slide {
         background-color: var(--surface-color);
         border-radius: 20px;
@@ -305,28 +424,65 @@ body {
         display: flex;
         flex-direction: column;
     }
-    .mobile-media { flex: 1.5; overflow: hidden; }
-    .mobile-media img, .mobile-media video { width: 100%; height: 100%; object-fit: cover; }
-    .mobile-text { 
-        flex: 1; 
+
+    .mobile-media {
+        flex: 1.5;
+        overflow: hidden;
+    }
+
+    .mobile-media img,
+    .mobile-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .mobile-text {
+        flex: 1;
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
-    .mobile-text h3 { font-size: 1.5rem; margin: 0 0 0.5rem 0; color: var(--accent-color); font-weight: 700; }
-    .mobile-text p { font-size: 0.95rem; line-height: 1.5; margin: 0; }
+
+    .mobile-text h3 {
+        font-size: 1.5rem;
+        margin: 0 0 0.5rem 0;
+        color: var(--accent-color);
+        font-weight: 700;
+    }
+
+    .mobile-text p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0;
+    }
 }
 
 @media (max-width: 768px) {
+
     /* Info Section Responsive */
     .info-section {
         padding: 80px 1rem;
     }
+
     .info-container {
         flex-direction: column;
+        text-align: center;
+        /* Center text within the column */
+        align-items: center;
+        /* Center the video */
     }
+
     .info-title {
         font-size: 2rem;
     }
+
+    .info-media,
+    .info-video {
+        width: 100%;
+        max-width: 500px;
+        /* Optional: Prevents it from getting too big on tablets */
+    }
+
 }
