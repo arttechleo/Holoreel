@@ -218,10 +218,12 @@ body {
 }
 
 #quest-canvas-mobile {
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     width: 100%;
     height: 100%;
-    aspect-ratio: 1 / 1; /* Maintain aspect ratio */
+    aspect-ratio: 1 / 1;
+    /* Maintain aspect ratio */
     cursor: grab;
     /* Optional: Add some padding/margin if needed */
     margin-top: 20px;
@@ -267,7 +269,7 @@ body {
 
 /* Info Section */
 .info-section {
-    padding: 120px 2rem;
+    padding: 0px 1rem;
     background-color: black;
 }
 
@@ -317,7 +319,8 @@ body {
 
 .launch-info .fine-print {
     font-size: 0.8rem;
-    color: #a0a0a0; /* Optional: a lighter color for less prominence */
+    color: #a0a0a0;
+    /* Optional: a lighter color for less prominence */
     margin-top: 1rem;
 }
 
@@ -345,57 +348,53 @@ body {
 }
 
 @media (max-width: 900px) {
-    .interactive-scroller {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        padding: 0 1rem;
-    }
 
-    .text-reel-container,
-    .sticky-photo-container,
-    .media-reel-container {
-        max-width: 500px;
-        width: 100%;
-        margin: 0 auto;
-        padding-bottom: 2rem;
-        flex-basis: auto;
-    }
-
+    /* Hide the desktop scroller on mobile */
     .features-wrapper {
         display: none;
     }
 
+    /* Show the mobile scroller */
     .mobile-scroller {
         display: block;
-        scroll-snap-type: y mandatory;
+        height: 100vh;
         overflow-y: scroll;
-        height: calc(100vh - 60px);
-        padding-top: 5vh;
+        scroll-snap-type: y mandatory;
+        padding-top: 60px;
+        /* To account for the fixed navbar */
         box-sizing: border-box;
     }
 
+    /* Style for each snapping slide */
     .mobile-slide {
+        height: calc(100vh - 60px);
+        /* Fill the rest of the viewport */
+        scroll-snap-align: start;
         background-color: var(--surface-color);
         border-radius: 20px;
         overflow: hidden;
-        margin: 0 1rem 5vh 1rem;
-        height: calc(90vh - 60px);
-        scroll-snap-align: start;
+        margin: 0 1rem 1rem 1rem;
         display: flex;
         flex-direction: column;
     }
 
+    /* Style for the media and text areas within each slide */
     .mobile-media {
         flex: 1.5;
         overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
     }
 
     .mobile-media img,
     .mobile-media video {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+        /* Use 'contain' to ensure the whole video/image is visible */
+        border-radius: 12px;
     }
 
     .mobile-text {
@@ -404,6 +403,7 @@ body {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        text-align: center;
     }
 
     .mobile-text h3 {
@@ -419,59 +419,38 @@ body {
         margin: 0;
     }
 
-    .demo-reel {
-        /* width: 100%; */
-        width: 100vw;
-        height: 100vh;
-        /* Make the video container full-width on mobile */
-        border-radius: 0;
-        /* Optional: Remove border-radius on smaller screens for a cleaner look */
-    }
-
-    .video-overlay-wrapper iframe {
-        /*
-        * On mobile, many videos are portrait (9:16). We can use a different aspect ratio here.
-        * Feel free to adjust based on the video content.
-        */
-        /* aspect-ratio: 9 / 16; */
-        position: static;
-        width: 100vw;
-        height: 100vh;
-    }
-
-    .info-video {
-        height: 10vh;
-    }
-
-     .info-media {
-        flex-basis: 100%; /* Take full width on mobile */
-        max-width: 80vw; /* Adjust max width as needed */
-        margin: 0 auto; /* Center it */
-        height: auto; /* Allow height to adjust */
-        display: flex; /* Use flex to center canvas */
+    /* Existing styles for other sections */
+    .info-media {
+        flex-basis: 100%;
+        max-width: 80vw;
+        margin: 0 auto;
+        height: auto;
+        display: flex;
         justify-content: center;
         align-items: center;
-        padding-bottom: 2rem; /* Add some space below it */
+        padding-bottom: 2rem;
     }
 
-
-      #quest-canvas-mobile {
-        display: block; /* Show the mobile canvas */
-        height: 60vh; /* Give it a specific height on mobile */
+    #quest-canvas-mobile {
+        display: block;
+        height: 60vh;
         max-width: 100%;
-        margin: 0; /* Remove default margins */
+        margin: 0;
     }
 
-     .info-text {
-        padding: 0 1rem; /* Adjust padding for mobile */
-        margin-top: -50px; /* Pull text up if needed to close gap */
+    .info-text {
+        padding: 0 1rem;
+        margin-top: -50px;
     }
 
 }
 
 @media (max-width: 768px) {
+    .mobile-slide {
+        margin: 0 0.5rem 1rem 0.5rem;
+        /* Less margin on smaller screens */
+    }
 
-    /* Update this section */
     .demo-reel {
         /* width: 100%; */
         width: 100vw;
@@ -518,7 +497,7 @@ body {
         height: 65vh;
     }
 
-        .mobile-text {
+    .mobile-text {
         flex: 1;
         padding: 1.5rem;
         display: flex;
@@ -539,8 +518,9 @@ body {
         margin: 0;
     }
 
-     #quest-canvas-mobile {
-        height: 50vh; /* Adjust height for smaller screens */
+    #quest-canvas-mobile {
+        height: 50vh;
+        /* Adjust height for smaller screens */
     }
-    
+
 }

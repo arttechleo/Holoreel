@@ -2,10 +2,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export function initMobileModel() {
-    // Change this line to target the new canvas ID
-    const canvas = document.getElementById('quest-canvas-mobile'); 
+    const canvas = document.getElementById('quest-canvas');
     if (!canvas) {
-        console.error('Canvas element "quest-canvas-mobile" not found for the mobile model.');
+        console.error('Canvas element not found for the mobile model.');
         return;
     }
 
@@ -61,7 +60,7 @@ export function initMobileModel() {
         const permissionButton = document.createElement('button');
         permissionButton.textContent = 'Allow Motion Access';
         Object.assign(permissionButton.style, {
-            position: 'absolute', // Changed to absolute to position within info-media or body
+            position: 'fixed',
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%)',
@@ -74,8 +73,7 @@ export function initMobileModel() {
             color: 'white',
             cursor: 'pointer'
         });
-        // Append to the parent of the canvas, or a specific container
-        canvas.parentElement.appendChild(permissionButton);
+        document.body.appendChild(permissionButton);
 
         permissionButton.addEventListener('click', () => {
             DeviceOrientationEvent.requestPermission()
