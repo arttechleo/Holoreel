@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DeviceOrientationControls } from 'three/addons/controls/DeviceOrientationControls.js';
 
 /**
  * Initializes and controls the 3D Quest model using the device's gyroscope.
@@ -22,6 +23,7 @@ export function initMobileModel() {
         alpha: true
     });
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
     // Update renderer size based on canvas dimensions
     function onResize() {
@@ -55,16 +57,9 @@ export function initMobileModel() {
         console.error('An error happened while loading the model:', error);
     });
 
-    // --- Gyroscope Logic for Mobile Rotation ---
-    let gyroData = { beta: 0, gamma: 0 };
-    const DEG2RAD = Math.PI / 180;
-
-    function handleGyroscope(event) {
-        // gamma: Left-to-right tilt in degrees
-        // beta: Front-to-back tilt in degrees
-        gyroData.gamma = event.gamma;
-        gyroData.beta = event.beta;
-    }
+    // --- Gyroscope Control Setup ---
+    // Use the official Three.js DeviceOrientationControls for reliable gyroscope tracking
+    const controls = new DeviceOrientationControls(camera);
 
     // Check for iOS 13+ device orientation permission
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -90,43 +85,28 @@ export function initMobileModel() {
             DeviceOrientationEvent.requestPermission()
                 .then(permissionState => {
                     if (permissionState === 'granted') {
-                        window.addEventListener('deviceorientation', handleGyroscope);
+                        controls.connect(); // Connect controls only after permission is granted
                         permissionButton.remove();
                     }
                 })
                 .catch(console.error);
         });
     } else {
-        // Non-iOS 13+ devices can just add the listener
-        window.addEventListener('deviceorientation', handleGyroscope);
+        // Non-iOS 13+ devices can just connect the controls directly
+        controls.connect();
     }
-
-    // --- NEW ANIMATION LOGIC ---
-    // These variables control the feel of the movement
-    const DAMPING_FACTOR = 0.005; // Adjust this to control how much the model moves
-    const MAX_ROTATION_RADIANS = 0.2; // Maximum rotation in either direction (in radians)
 
     // --- Animation Loop ---
     function animate() {
         requestAnimationFrame(animate);
 
-        if (headsetModel) {
-            // Calculate the target rotation based on gyro data and damping
-            const targetRotationY = gyroData.gamma * DEG2RAD * DAMPING_FACTOR;
-            const targetRotationX = gyroData.beta * DEG2RAD * DAMPING_FACTOR;
+        // Update the controls. This handles the gyroscope-based camera rotation.
+        controls.update();
 
-            // Clamp the rotation values to prevent excessive movement
-            const clampedY = Math.max(Math.min(targetRotationY, MAX_ROTATION_RADIANS), -MAX_ROTATION_RADIANS);
-            const clampedX = Math.max(Math.min(targetRotationX, MAX_ROTATION_RADIANS), -MAX_ROTATION_RADIANS);
-
-            // Smoothly move the model towards the clamped rotation
-            headsetModel.rotation.y += (clampedY - headsetModel.rotation.y) * 0.1;
-            headsetModel.rotation.x += (clampedX - headsetModel.rotation.x) * 0.1;
-        }
-
+        // Render the scene
         renderer.render(scene, camera);
     }
-    
+
     // Initial size setup and animation start
     onResize();
     animate();
