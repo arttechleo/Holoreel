@@ -8,11 +8,13 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 export function initMobileModel() {
     const canvas = document.getElementById('quest-canvas-mobile');
     const container = document.querySelector('.info-media');
-    const permissionButton = document.getElementById('gyro-permission-btn');
+    
+    // Dynamically create a permission button for mobile
+    const permissionButton = document.createElement('button');
+    permissionButton.textContent = 'Allow Motion Access';
+    permissionButton.id = 'gyro-permission-btn';
 
-    // It's good practice to check for the permission button even if we won't use it,
-    // to ensure the HTML structure is as expected.
-    if (!canvas || !container || !permissionButton) {
+    if (!canvas || !container) {
         console.error('Required HTML elements not found for the mobile model.');
         return;
     }
@@ -50,7 +52,7 @@ export function initMobileModel() {
         console.error('An error happened while loading the model:', error);
     });
 
-    // --- Gyroscope Control Setup (New Feature) ---
+    // --- Gyroscope Control Setup ---
     const onDeviceOrientation = (event) => {
         if (headsetModel) {
             const alphaRad = THREE.MathUtils.degToRad(event.alpha);
@@ -64,27 +66,24 @@ export function initMobileModel() {
 
     // Check if the DeviceOrientationEvent.requestPermission API is available (iOS 13+)
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // Automatically request permission without a button click.
-        // This will trigger the native iOS permission prompt.
-        DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    // Permission granted, start listening for device orientation changes.
-                    window.addEventListener('deviceorientation', onDeviceOrientation, true);
-                    // Hide the button since it is no longer needed.
-                    permissionButton.style.display = 'none';
-                } else {
-                    console.log('Motion permission denied.');
-                    // You could optionally show a message to the user here.
-                    permissionButton.style.display = 'none';
-                }
-            })
-            .catch(console.error);
+        container.appendChild(permissionButton);
+        permissionButton.style.display = 'block';
+
+        permissionButton.addEventListener('click', () => {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('deviceorientation', onDeviceOrientation, true);
+                        permissionButton.style.display = 'none';
+                    } else {
+                        console.log('Motion permission denied.');
+                    }
+                })
+                .catch(console.error);
+        });
     } else {
         // For Android and other devices, permission is not required.
-        // The event listener can be added directly.
         window.addEventListener('deviceorientation', onDeviceOrientation, true);
-        // Ensure the button is hidden on these devices as well.
         permissionButton.style.display = 'none';
     }
 

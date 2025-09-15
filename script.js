@@ -1,9 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DeviceOrientationControls } from 'three/addons/controls/DeviceOrientationControls.js';
-import { DeviceOrientationControls } from './jsm/controls/DeviceOrientationControls.js';
 
-// NEW: All your main website logic is now in a single, exportable function.
+// All your main website logic is now in a single, exportable function.
 export function initializeApp() {
     // --- CACHE DOM ELEMENTS ---
     const promoVideo = document.getElementById('promo-video');
@@ -16,9 +14,9 @@ export function initializeApp() {
     
     // --- FINALIZED: THREE.JS 3D MODEL SETUP ---
     function initThreeJS() {
-        const canvas = document.getElementById('quest-canvas');
+        const canvas = document.getElementById('quest-canvas-desktop');
         if (!canvas) {
-            console.error("Canvas element 'quest-canvas' not found.");
+            console.error("Canvas element 'quest-canvas-desktop' not found.");
             return;
         }
 
@@ -55,63 +53,12 @@ export function initializeApp() {
             console.error('An error happened while loading the model:', error);
         });
 
-        // 4. Input Controls
-        let controls;
-        if (window.innerWidth <= 900) {
-            // Mobile: Gyroscope controls with a button
-            controls = new DeviceOrientationControls(headsetModel);
-
-            const enableGyroscopeButton = document.createElement('button');
-            enableGyroscopeButton.textContent = 'Enable Gyroscope';
-            enableGyroscopeButton.id = 'gyro-button';
-            Object.assign(enableGyroscopeButton.style, {
-                position: 'absolute',
-                top: '10px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: '10',
-                padding: '10px 20px',
-                fontSize: '1em',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                borderRadius: '8px',
-                border: '1px solid white',
-                background: 'rgba(0, 0, 0, 0.5)',
-                color: 'white'
-            });
-
-            canvas.parentElement.appendChild(enableGyroscopeButton);
-
-            enableGyroscopeButton.addEventListener('click', () => {
-                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    // Handle iOS 13+ permission request
-                    DeviceOrientationEvent.requestPermission()
-                        .then(permissionState => {
-                            if (permissionState === 'granted') {
-                                controls.connect();
-                                enableGyroscopeButton.style.display = 'none'; // Hide the button
-                            }
-                        })
-                        .catch(console.error);
-                } else {
-                    // Non-iOS devices can connect directly
-                    controls.connect();
-                    enableGyroscopeButton.style.display = 'none'; // Hide the button
-                }
-            });
-
-        } else {
-            // Desktop: Mouse controls
-            let mouse = new THREE.Vector2();
-            window.addEventListener('mousemove', (event) => {
-                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            });
-
-            // The animate loop will use these mouse values for rotation
-            // A null/dummy controls object to avoid errors
-            controls = { update: () => {} };
-        }
+        // 4. Mouse Tracking for Rotation
+        let mouse = new THREE.Vector2();
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
         
         // 5. A dedicated function to handle resizing
         function onResize() {
@@ -130,27 +77,19 @@ export function initializeApp() {
             requestAnimationFrame(animate);
 
             if (headsetModel) {
-                if (window.innerWidth <= 900) {
-                    // Mobile animation (gyroscope)
-                    controls.update();
-                } else {
-                    // Desktop animation (mouse)
-                    headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
-                    headsetModel.rotation.x += (-mouse.y * 1.2 - headsetModel.rotation.x) * 0.05;
-                }
+                headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
+                headsetModel.rotation.x += (-mouse.y * 1.2 - headsetModel.rotation.x) * 0.05;
             }
             renderer.render(scene, camera);
         }
         
-        // ✨ FIX: Initialize the size once before the loop
         onResize(); 
-        // ✨ FIX: Start the animation loop
         animate(); 
 
         window.addEventListener('resize', onResize);
     }
     
-    // --- EXISTING SCROLL & MOBILE LOGIC ---
+    // --- EXISTING SCROLL LOGIC (remains unchanged) ---
     let currentActiveIndex = -1;
 
     function handleScrollAnimation() {
@@ -168,7 +107,7 @@ export function initializeApp() {
             }
         }
 
-        if (window.innerWidth <= 900 || !featuresWrapper) return;
+        if (!featuresWrapper) return;
 
         const wrapperRect = featuresWrapper.getBoundingClientRect();
         const wrapperTop = wrapperRect.top + scrollY;
@@ -201,31 +140,9 @@ export function initializeApp() {
         });
     }
 
-    function setupMobileView() {
-        if (window.innerWidth > 900) return;
-        const mobileContainer = document.querySelector('.mobile-scroller');
-        if (!mobileContainer || mobileContainer.children.length > 0) return;
-
-        textItems.forEach((textItem, index) => {
-            const mediaItem = mediaItems[index];
-            const slide = document.createElement('div');
-            slide.className = 'mobile-slide';
-            slide.innerHTML = `
-                <div class="mobile-media">${mediaItem.innerHTML}</div>
-                <div class="mobile-text">${textItem.innerHTML}</div>
-            `;
-            mobileContainer.appendChild(slide);
-        });
-    }
-
     // --- INITIALIZE ---
     window.addEventListener('scroll', handleScrollAnimation);
-    window.addEventListener('resize', () => {
-        handleScrollAnimation();
-        setupMobileView();
-    });
-
-    setupMobileView();
+    window.addEventListener('resize', handleScrollAnimation);
     handleScrollAnimation();
     initThreeJS();
 }
