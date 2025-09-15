@@ -79,14 +79,17 @@ export function initMobileModel() {
     // Check if we need to ask for permission (on iOS 13+).
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         
-        // ✨ --- START: NEW JAVASCRIPT STYLING --- ✨
-        // Apply styles directly to the button to position it below the headset.
+        // ✨ --- START: JAVASCRIPT STYLING --- ✨
+        // Apply styles directly to the button to position it.
         permissionButton.style.position = 'absolute';
-        permissionButton.style.zIndex = '10'; // Ensures it's on top of the canvas
-        permissionButton.style.top = '75%'; // Positions it 75% down from the top
-        permissionButton.style.left = '50%'; // Moves its left edge to the center
-        permissionButton.style.transform = 'translate(-50%, -50%)'; // Perfectly centers it
-        // ✨ --- END: NEW JAVASCRIPT STYLING --- ✨
+        permissionButton.style.zIndex = '10'; // Ensures it's on top
+        
+        // This value positions the button vertically. 65% is just below the headset.
+        permissionButton.style.top = '65%'; 
+
+        permissionButton.style.left = '50%'; // Horizontally center
+        permissionButton.style.transform = 'translate(-50%, -50%)'; // Fine-tune centering
+        // ✨ --- END: JAVASCRIPT STYLING --- ✨
 
         // Show the button.
         permissionButton.style.display = 'block';
