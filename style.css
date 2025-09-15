@@ -358,6 +358,7 @@ body {
     /* This value moves the button down from the top */
     top: 65%; 
     transform: translateX(-50%); /* This centers the button horizontally */
+    transform: translateY(25%);
     /* Clean styling for the button */
     padding: 12px 24px;
     font-size: 16px;
