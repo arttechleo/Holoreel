@@ -407,6 +407,26 @@ body {
 
 @media (max-width: 900px) {
 
+   .demo-reel {
+        position: relative; /* This is the anchor for the iframe */
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden; /* This hides the parts of the video outside the screen */
+        border-radius: 0;
+    }
+
+        /* 2. Force the iframe to cover the full screen */
+    .demo-reel iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        /* This trick forces a 16:9 video to cover a vertical screen */
+        width: 300%; 
+        height: 100%;
+    }
+
 
       .info-video {
         width: 100%;
@@ -577,11 +597,25 @@ body {
     }
 
     .demo-reel {
+        position: relative; /* This is the anchor for the iframe */
         width: 100vw;
-        height: 80vh;
+        height: 100vh;
+        overflow: hidden; /* This hides the parts of the video outside the screen */
         border-radius: 0;
     }
 
+        /* 2. Force the iframe to cover the full screen */
+    .demo-reel iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        /* This trick forces a 16:9 video to cover a vertical screen */
+        width: 300%; 
+        height: 100%;
+    }
+    
     .video-overlay-wrapper iframe {
         position: static;
         width: 100vw;
