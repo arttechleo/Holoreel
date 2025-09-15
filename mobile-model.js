@@ -60,18 +60,16 @@ export function initMobileModel() {
         }
     };
 
-    // ✨ --- CORRECTED PERMISSION LOGIC --- ✨
+    // --- PERMISSION LOGIC ---
 
     // This function runs when the user clicks the permission button.
     function requestDeviceOrientation() {
         DeviceOrientationEvent.requestPermission()
             .then(permissionState => {
                 if (permissionState === 'granted') {
-                    // Permission granted!
-                    permissionButton.style.display = 'none'; // Hide the button
-                    window.addEventListener('deviceorientation', onDeviceOrientation, true); // Start listening
+                    permissionButton.style.display = 'none';
+                    window.addEventListener('deviceorientation', onDeviceOrientation, true);
                 } else {
-                    // Permission denied.
                     permissionButton.innerText = 'Access Denied';
                 }
             })
@@ -80,9 +78,20 @@ export function initMobileModel() {
 
     // Check if we need to ask for permission (on iOS 13+).
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        
+        // ✨ --- START: NEW JAVASCRIPT STYLING --- ✨
+        // Apply styles directly to the button to position it below the headset.
+        permissionButton.style.position = 'absolute';
+        permissionButton.style.zIndex = '10'; // Ensures it's on top of the canvas
+        permissionButton.style.top = '75%'; // Positions it 75% down from the top
+        permissionButton.style.left = '50%'; // Moves its left edge to the center
+        permissionButton.style.transform = 'translate(-50%, -50%)'; // Perfectly centers it
+        // ✨ --- END: NEW JAVASCRIPT STYLING --- ✨
+
         // Show the button.
         permissionButton.style.display = 'block';
-        // Wait for the user to click it before asking for permission.
+        
+        // Wait for the user to click it.
         permissionButton.addEventListener('click', requestDeviceOrientation, { once: true });
     } else {
         // On Android and other devices, start the gyroscope automatically.
