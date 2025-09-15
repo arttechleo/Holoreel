@@ -611,6 +611,7 @@ body {
     }
 
     .info-video {
+        margin-top: 50px;
         transform: translate(0%, 27%);
         width: 90%;
         height: 90%;
