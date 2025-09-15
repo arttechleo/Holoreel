@@ -9,6 +9,11 @@ export function initMobileModel() {
     const canvas = document.getElementById('quest-canvas-mobile');
     const container = document.querySelector('.info-media');
     
+    // Dynamically create a permission button for mobile
+    const permissionButton = document.createElement('button');
+    permissionButton.textContent = 'Allow Motion Access';
+    permissionButton.id = 'gyro-permission-btn';
+
     if (!canvas || !container) {
         console.error('Required HTML elements not found for the mobile model.');
         return;
@@ -58,71 +63,20 @@ export function initMobileModel() {
             headsetModel.rotation.x = betaRad;
         }
     };
-    
-    // Create the full-screen modal prompt
-    function createPermissionModal() {
-        const modal = document.createElement('div');
-        modal.id = 'gyro-modal';
-        Object.assign(modal.style, {
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '100%',
-            background: 'rgba(0, 0, 0, 0.9)',
-            color: 'white',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: '1000'
-        });
 
-        const text = document.createElement('p');
-        text.textContent = 'For the full interactive experience, please allow motion access.';
-        Object.assign(text.style, {
-            fontSize: '1.2em',
-            textAlign: 'center',
-            maxWidth: '80%',
-            marginBottom: '20px'
-        });
-
-        const button = document.createElement('button');
-        button.textContent = 'Allow Motion Access';
-        Object.assign(button.style, {
-            padding: '12px 24px',
-            fontSize: '1em',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            borderRadius: '8px',
-            border: '1px solid white',
-            background: 'rgba(255, 255, 255, 0.1)',
-            color: 'white',
-            transition: 'background 0.3s ease'
-        });
-        button.addEventListener('mouseover', () => { button.style.background = 'rgba(255, 255, 255, 0.3)'; });
-        button.addEventListener('mouseout', () => { button.style.background = 'rgba(255, 255, 255, 0.1)'; });
-
-        modal.appendChild(text);
-        modal.appendChild(button);
-        document.body.appendChild(modal);
-
-        return { modal, button };
-    }
-
-    // --- Main Initialization Logic ---
+    // Check if the DeviceOrientationEvent.requestPermission API is available (iOS 13+)
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        const { modal, button } = createPermissionModal();
+        container.appendChild(permissionButton);
+        permissionButton.style.display = 'block';
 
-        button.addEventListener('click', () => {
+        permissionButton.addEventListener('click', () => {
             DeviceOrientationEvent.requestPermission()
                 .then(permissionState => {
                     if (permissionState === 'granted') {
                         window.addEventListener('deviceorientation', onDeviceOrientation, true);
-                        modal.remove(); // Remove the modal after permission is granted
+                        permissionButton.style.display = 'none';
                     } else {
                         console.log('Motion permission denied.');
-                        modal.remove(); // Also remove the modal if permission is denied
                     }
                 })
                 .catch(console.error);
@@ -130,6 +84,7 @@ export function initMobileModel() {
     } else {
         // For Android and other devices, permission is not required.
         window.addEventListener('deviceorientation', onDeviceOrientation, true);
+        permissionButton.style.display = 'none';
     }
 
     // --- Animation Loop ---
