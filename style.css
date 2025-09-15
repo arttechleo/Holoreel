@@ -541,7 +541,7 @@ body {
         margin: 0 auto;
         /* ✨ REMOVED: height: 65vh; */
         /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
-        min-height: 40vh; 
+        min-height: 60vh; 
         display: flex;
         justify-content: center;
         align-items: center;
