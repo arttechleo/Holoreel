@@ -293,6 +293,13 @@ body {
     margin: 0 0 1rem 0;
 }
 
+  .info-subtitle {
+     font-size: 2.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+    }
+
 .info-description {
     font-size: 1.1rem;
     line-height: 1.7;
@@ -539,6 +546,12 @@ body {
     }
 
     .info-title {
+        margin-top: -120px;
+        font-size: 2rem;
+    }
+
+    .info-subtitle {
+        margin-top: 10gpx;
         font-size: 2rem;
     }
 
@@ -549,6 +562,7 @@ body {
     }
 
     .info-video {
+        transform: translate(0%, 15%);
         width: 100%;
         height: 100%;
     }
@@ -572,5 +586,11 @@ body {
         font-size: 0.95rem;
         line-height: 1.5;
         margin: 0;
+    }
+
+     .info-text {
+        padding: 0 1rem;
+        margin-top: 200px;
+        margin-bottom: 20px;
     }
 }
