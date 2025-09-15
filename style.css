@@ -352,14 +352,18 @@ body {
 }
 
 #gyro-permission-btn {
-    position: absolute;
-    z-index: 10; /* Keeps it on top of the 3D model */
-    left: 50%;
-    /* This value moves the button down from the top */
-    top: 65%; 
-    transform: translateX(-50%); /* This centers the button horizontally */
-    transform: translateY(25%);
-    /* Clean styling for the button */
+    /* Positioning */
+    position: absolute !important; /* Use !important to override everything */
+    z-index: 10 !important;
+    left: 50% !important;
+    top: 65% !important; /* Pushes button down from the top of the .info-media container */
+    transform: translateX(-50%) !important;
+    
+    /* Make sure it's visible if JS hasn't run yet */
+    display: block !important; 
+    opacity: 1 !important;
+
+    /* Styling */
     padding: 12px 24px;
     font-size: 16px;
     font-weight: bold;
@@ -371,7 +375,6 @@ body {
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
 
 #gyro-permission-btn:hover {
     transform: translate(-50%, -50%) scale(1.05); /* Add a hover effect */
