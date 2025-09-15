@@ -352,11 +352,32 @@ body {
 }
 
 #gyro-permission-btn {
+    /* Positioning */
     position: absolute;
-    bottom: 20px;
+    /* ✨ CHANGE: Bring it higher up to sit over the 3D model */
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
+    transform: translate(-50%, -50%); /* Center it perfectly */
+    /* ✨ CHANGE: Ensure it's on top of all other elements in its container */
+    z-index: 10;
+
+    /* Styling */
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    backdrop-filter: blur(5px); /* Nice blurry background effect */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+#gyro-permission-btn:hover {
+    transform: translate(-50%, -50%) scale(1.05); /* Add a hover effect */
+    background-color: white;
 }
 
 .contact-button {
