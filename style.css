@@ -501,19 +501,14 @@ body {
     }
 
     /* Existing styles for other sections */
-    .info-media {
-    position: relative;
-        flex-basis: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        margin-top: 50px;
-        /* ✨ CHANGE: Change this to a responsive height, or remove it */
-        height: 75vh; /* Adjust this value as needed */
+.info-media {
+        width: 100%;
         display: flex;
         justify-content: center;
-        align-items: center;
-        /* You can remove this or reduce it, depending on the desired spacing */
-        padding-bottom: 0; 
+        /* Remove any fixed height that was causing the clipping */
+        height: auto;
+        min-height: unset;
+        padding: 0;
     }
 
 #quest-canvas-mobile {
@@ -529,6 +524,19 @@ body {
         padding: 0 1rem;
         margin-top: -50px;
     }
+
+     .info-section {
+        overflow: visible;
+        padding: 4rem 1rem; /* Give it proper spacing */
+    }
+
+     .info-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem; /* Add space between the 3D model and the text */
+    }
+
+
 }
 
 @media (max-width: 768px) {
