@@ -1,6 +1,9 @@
 // This is your main script (the one that handles the loading screen).
 import { initLoadingScreen } from './loader.js';
+import { initializeApp } from './script.js'; 
+import { initMobileModel } from './mobile-model.js'; // Corrected import
 
+// This function will be called when the point cloud animation is ready to hide.
 function showMainContent() {
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
@@ -11,28 +14,18 @@ function showMainContent() {
     loadingScreen.addEventListener('transitionend', () => {
         loadingScreen.remove();
 
-        // Dynamically import and initialize the correct app version
+        // Initialize the main app logic after the fade out.
+        initializeApp();
+
+        // Conditionally initialize the mobile model and gyro control.
         if (window.innerWidth <= 900) {
-            import('./mobile-model.js')
-                .then(module => {
-                    module.initMobileModel();
-                })
-                .catch(error => {
-                    console.error('Failed to load mobile-model.js:', error);
-                });
-        } else {
-            import('./script.js')
-                .then(module => {
-                    module.initializeApp();
-                })
-                .catch(error => {
-                    console.error('Failed to load script.js:', error);
-                });
+            initMobileModel();
         }
     });
 }
 
 // Start the loading screen animation immediately
+// The second argument is a callback that will fire when the animation is 100% complete
 initLoadingScreen('./media/logo/logo.png', () => {
     showMainContent();
 });

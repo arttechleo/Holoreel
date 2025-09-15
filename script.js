@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// All your main website logic is now in a single, exportable function.
+// NEW: All your main website logic is now in a single, exportable function.
 export function initializeApp() {
     // --- CACHE DOM ELEMENTS ---
     const promoVideo = document.getElementById('promo-video');
@@ -14,9 +14,11 @@ export function initializeApp() {
     
     // --- FINALIZED: THREE.JS 3D MODEL SETUP ---
     function initThreeJS() {
-        const canvas = document.getElementById('quest-canvas-desktop');
+        if (window.innerWidth <= 900) return; // Only run on desktop
+
+        const canvas = document.getElementById('quest-canvas');
         if (!canvas) {
-            console.error("Canvas element 'quest-canvas-desktop' not found.");
+            console.error("Canvas element 'quest-canvas' not found.");
             return;
         }
 
@@ -83,13 +85,15 @@ export function initializeApp() {
             renderer.render(scene, camera);
         }
         
+        // ✨ FIX: Initialize the size once before the loop
         onResize(); 
+        // ✨ FIX: Start the animation loop
         animate(); 
 
         window.addEventListener('resize', onResize);
     }
     
-    // --- EXISTING SCROLL LOGIC (remains unchanged) ---
+    // --- EXISTING SCROLL & MOBILE LOGIC ---
     let currentActiveIndex = -1;
 
     function handleScrollAnimation() {
@@ -107,7 +111,7 @@ export function initializeApp() {
             }
         }
 
-        if (!featuresWrapper) return;
+        if (window.innerWidth <= 900 || !featuresWrapper) return;
 
         const wrapperRect = featuresWrapper.getBoundingClientRect();
         const wrapperTop = wrapperRect.top + scrollY;
@@ -140,9 +144,31 @@ export function initializeApp() {
         });
     }
 
+    function setupMobileView() {
+        if (window.innerWidth > 900) return;
+        const mobileContainer = document.querySelector('.mobile-scroller');
+        if (!mobileContainer || mobileContainer.children.length > 0) return;
+
+        textItems.forEach((textItem, index) => {
+            const mediaItem = mediaItems[index];
+            const slide = document.createElement('div');
+            slide.className = 'mobile-slide';
+            slide.innerHTML = `
+                <div class="mobile-media">${mediaItem.innerHTML}</div>
+                <div class="mobile-text">${textItem.innerHTML}</div>
+            `;
+            mobileContainer.appendChild(slide);
+        });
+    }
+
     // --- INITIALIZE ---
     window.addEventListener('scroll', handleScrollAnimation);
-    window.addEventListener('resize', handleScrollAnimation);
+    window.addEventListener('resize', () => {
+        handleScrollAnimation();
+        setupMobileView();
+    });
+
+    setupMobileView();
     handleScrollAnimation();
     initThreeJS();
 }
