@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DeviceOrientationControls } from 'three/addons/controls/DeviceOrientationControls.js';
+import { DeviceOrientationControls } from './jsm/controls/DeviceOrientationControls.js';
 
 // NEW: All your main website logic is now in a single, exportable function.
 export function initializeApp() {
@@ -14,8 +16,6 @@ export function initializeApp() {
     
     // --- FINALIZED: THREE.JS 3D MODEL SETUP ---
     function initThreeJS() {
-        if (window.innerWidth <= 900) return; // Only run on desktop
-
         const canvas = document.getElementById('quest-canvas');
         if (!canvas) {
             console.error("Canvas element 'quest-canvas' not found.");
@@ -55,12 +55,63 @@ export function initializeApp() {
             console.error('An error happened while loading the model:', error);
         });
 
-        // 4. Mouse Tracking for Rotation
-        let mouse = new THREE.Vector2();
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
+        // 4. Input Controls
+        let controls;
+        if (window.innerWidth <= 900) {
+            // Mobile: Gyroscope controls with a button
+            controls = new DeviceOrientationControls(headsetModel);
+
+            const enableGyroscopeButton = document.createElement('button');
+            enableGyroscopeButton.textContent = 'Enable Gyroscope';
+            enableGyroscopeButton.id = 'gyro-button';
+            Object.assign(enableGyroscopeButton.style, {
+                position: 'absolute',
+                top: '10px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: '10',
+                padding: '10px 20px',
+                fontSize: '1em',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                borderRadius: '8px',
+                border: '1px solid white',
+                background: 'rgba(0, 0, 0, 0.5)',
+                color: 'white'
+            });
+
+            canvas.parentElement.appendChild(enableGyroscopeButton);
+
+            enableGyroscopeButton.addEventListener('click', () => {
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    // Handle iOS 13+ permission request
+                    DeviceOrientationEvent.requestPermission()
+                        .then(permissionState => {
+                            if (permissionState === 'granted') {
+                                controls.connect();
+                                enableGyroscopeButton.style.display = 'none'; // Hide the button
+                            }
+                        })
+                        .catch(console.error);
+                } else {
+                    // Non-iOS devices can connect directly
+                    controls.connect();
+                    enableGyroscopeButton.style.display = 'none'; // Hide the button
+                }
+            });
+
+        } else {
+            // Desktop: Mouse controls
+            let mouse = new THREE.Vector2();
+            window.addEventListener('mousemove', (event) => {
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            // The animate loop will use these mouse values for rotation
+            // A null/dummy controls object to avoid errors
+            controls = { update: () => {} };
+        }
         
         // 5. A dedicated function to handle resizing
         function onResize() {
@@ -79,8 +130,14 @@ export function initializeApp() {
             requestAnimationFrame(animate);
 
             if (headsetModel) {
-                headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
-                headsetModel.rotation.x += (-mouse.y * 1.2 - headsetModel.rotation.x) * 0.05;
+                if (window.innerWidth <= 900) {
+                    // Mobile animation (gyroscope)
+                    controls.update();
+                } else {
+                    // Desktop animation (mouse)
+                    headsetModel.rotation.y += (mouse.x * 1.2 - headsetModel.rotation.y) * 0.05;
+                    headsetModel.rotation.x += (-mouse.y * 1.2 - headsetModel.rotation.x) * 0.05;
+                }
             }
             renderer.render(scene, camera);
         }
