@@ -352,21 +352,18 @@ body {
 }
 
 #gyro-permission-btn {
-    /* Positioning */
     position: absolute;
-    z-index: 10; /* Make sure it's on top */
+    z-index: 10; /* Keeps it on top of the 3D model */
     left: 50%;
-
-    /* ✨ CHANGE: Position from the top, not the bottom */
-    top: 75%; 
-    transform: translate(-50%, -50%); /* This perfectly centers the button */
-
-    /* Styling */
+    /* This value moves the button down from the top */
+    top: 65%; 
+    transform: translateX(-50%); /* This centers the button horizontally */
+    /* Clean styling for the button */
     padding: 12px 24px;
     font-size: 16px;
     font-weight: bold;
-    color: #000000;
-    background-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.95);
     border: none;
     border-radius: 30px;
     cursor: pointer;
