@@ -359,6 +359,26 @@ body {
     z-index: 3;
 }
 
+.contact-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 2px solid white;
+    border-radius: 25px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.contact-button:hover {
+    background-color: white;
+    color: #1a1a1a; /* A dark color for contrast */
+}
+
 
 @media (max-width: 900px) {
 
@@ -568,7 +588,7 @@ body {
     }
 
     .info-video {
-        transform: translate(0%, 15%);
+        transform: translate(0%, 27%);
         width: 90%;
         height: 90%;
     }
