@@ -359,7 +359,7 @@ body {
 
     /* ✨ CHANGE: Position from the top, not the bottom */
     top: 75%; 
-    transform: translate(-50%, -75%); /* This perfectly centers the button */
+    transform: translate(-50%, -5%); /* This perfectly centers the button */
 
     /* Styling */
     padding: 12px 24px;
