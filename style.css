@@ -504,10 +504,11 @@ body {
     .info-media {
     position: relative;
         flex-basis: 100%;
-        max-width: 80vw;
+        max-width: 100%;
         margin: 0 auto;
+        margin-top: 50px;
         /* ✨ CHANGE: Change this to a responsive height, or remove it */
-        height: 50vh; /* Adjust this value as needed */
+        height: 75vh; /* Adjust this value as needed */
         display: flex;
         justify-content: center;
         align-items: center;
