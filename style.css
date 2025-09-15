@@ -352,29 +352,25 @@ body {
 }
 
 #gyro-permission-btn {
-    /* Positioning */
-    position: absolute !important; /* Use !important to override everything */
-    z-index: 10 !important;
-    left: 50% !important;
-    top: 65% !important; /* Pushes button down from the top of the .info-media container */
-    transform: translateX(-50%) !important;
-    
-    /* Make sure it's visible if JS hasn't run yet */
-    display: block !important; 
-    opacity: 1 !important;
+    position: absolute;
+    bottom: 15%; /* Positions 15% from the bottom of the square */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* Keeps it on top */
 
     /* Styling */
     padding: 12px 24px;
     font-size: 16px;
     font-weight: bold;
     color: #000;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.9);
     border: none;
     border-radius: 30px;
     cursor: pointer;
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
 
 #gyro-permission-btn:hover {
     transform: translate(-50%, -50%) scale(1.05); /* Add a hover effect */
@@ -401,6 +397,13 @@ body {
     color: #1a1a1a; /* A dark color for contrast */
 }
 
+.model-viewer-container {
+    position: relative; /* This is the anchor */
+    width: 90%;
+    max-width: 100%;
+    aspect-ratio: 1 / 1; /* This is the key to consistency */
+    margin: auto; /* This centers the container itself */
+}
 
 @media (max-width: 900px) {
 
@@ -512,16 +515,14 @@ body {
         padding-bottom: 0; 
     }
 
-    #quest-canvas-mobile {
-        /* This is correct as it positions the canvas relative to .info-media */
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-    }
+#quest-canvas-mobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
 
     .info-text {
         padding: 0 1rem;

@@ -11,15 +11,14 @@
     <title>Holoreel</title>
     <link rel="icon" type="image/x-icon" href="./media/logo/favicon_image.png">
 
-<script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
-            "three/addons/": "https://esm.sh/three@0.161.0/examples/jsm/",
-            "DeviceOrientationControls": "/js/three/controls/DeviceOrientationControls.js"
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+            }
         }
-    }
-</script>
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>eruda.init();</script>
@@ -85,13 +84,11 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="sticky-photo-container">
                             <div class="sticky-photo">
                                 <canvas id="quest-canvas"></canvas>
                             </div>
                         </div>
-
                         <div class="media-reel-container">
                             <div class="media-reel">
                                 <div class="media-strip">
@@ -119,12 +116,14 @@
 
             <section class="info-section">
                 <div class="info-container">
+
                     <div class="info-media">
-                        <canvas id="quest-canvas-mobile"></canvas>
-                       <button id="gyro-permission-btn" style="display: none; position: absolute; top: 65%; left: 50%; transform: translateX(-50%); z-index: 10;">Allow Motion Access</button>
+                        <div class="model-viewer-container">
+                            <canvas id="quest-canvas-mobile"></canvas>
+                            <button id="gyro-permission-btn" style="display: none;">Allow Motion Access</button>
+                        </div>
                         <video class="info-video" autoplay muted loop playsinline>
                             <source src="./media/video/Holographic_company.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
                         </video>
                     </div>
 
