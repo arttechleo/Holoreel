@@ -362,6 +362,12 @@ body {
 
 @media (max-width: 900px) {
 
+
+      .info-video {
+        width: 100%;
+        height: 100%;
+    }
+
      .info-media {
         position: relative;
         flex-basis: 100%;
@@ -563,8 +569,8 @@ body {
 
     .info-video {
         transform: translate(0%, 15%);
-        width: 100%;
-        height: 100%;
+        width: 90%;
+        height: 90%;
     }
 
     .mobile-text {
