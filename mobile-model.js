@@ -5,12 +5,11 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
  * Initializes and controls the 3D Quest model using the device's gyroscope.
  * This function is designed to be called specifically on mobile devices.
  */
-export function initMobileModel() {
+export async function initMobileModel() {
     const canvas = document.getElementById('quest-canvas-mobile');
     const container = document.querySelector('.info-media');
-    const permissionButton = document.getElementById('gyro-permission-btn');
-
-    if (!canvas || !container || !permissionButton) {
+    
+    if (!canvas || !container) {
         console.error('Required HTML elements not found for the mobile model.');
         return;
     }
@@ -29,88 +28,102 @@ export function initMobileModel() {
     renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
     // --- Lighting ---
-    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(5, 10, 7.5);
-    scene.add(directionalLight);
+    scene.add(ambientLight, directionalLight);
 
     // --- Model Loading ---
-    let headsetModel;
     const loader = new GLTFLoader();
-    loader.load('./media/3D/Quest3.glb', (gltf) => {
+    let headsetModel;
+
+    try {
+        const gltf = await loader.loadAsync('./media/3D/Quest3.glb');
         headsetModel = gltf.scene;
+
         const box = new THREE.Box3().setFromObject(headsetModel);
         const center = box.getCenter(new THREE.Vector3());
+
         headsetModel.position.sub(center);
         headsetModel.scale.set(5, 5, 5);
         scene.add(headsetModel);
-    }, undefined, (error) => {
+
+    } catch (error) {
         console.error('An error happened while loading the model:', error);
-    });
-
-    // --- Gyroscope Control Setup ---
-    const onDeviceOrientation = (event) => {
-        if (headsetModel) {
-            const alphaRad = THREE.MathUtils.degToRad(event.alpha);
-            const betaRad = THREE.MathUtils.degToRad(event.beta);
-
-            headsetModel.rotation.order = 'YXZ';
-            headsetModel.rotation.y = alphaRad;
-            headsetModel.rotation.x = betaRad;
-        }
-    };
-
-    // --- PERMISSION LOGIC ---
-
-    // This function runs when the user clicks the permission button.
-    function requestDeviceOrientation() {
-        DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    permissionButton.style.display = 'none';
-                    window.addEventListener('deviceorientation', onDeviceOrientation, true);
-                } else {
-                    permissionButton.innerText = 'Access Denied';
-                }
-            })
-            .catch(console.error);
+        return;
     }
 
-    // Check if we need to ask for permission (on iOS 13+).
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        
-        // ✨ --- START: JAVASCRIPT STYLING --- ✨
-        // Apply styles directly to the button to position it.
-        permissionButton.style.position = 'absolute';
-        permissionButton.style.zIndex = '10'; // Ensures it's on top
-        
-        // This value positions the button vertically. 65% is just below the headset.
-        permissionButton.style.top = '65%'; 
-
-        permissionButton.style.left = '50%'; // Horizontally center
-        permissionButton.style.transform = 'translate(-50%, -50%)'; // Fine-tune centering
-        // ✨ --- END: JAVASCRIPT STYLING --- ✨
-
-        // Show the button.
-        permissionButton.style.display = 'block';
-        
-        // Wait for the user to click it.
-        permissionButton.addEventListener('click', requestDeviceOrientation, { once: true });
-    } else {
-        // On Android and other devices, start the gyroscope automatically.
-        window.addEventListener('deviceorientation', onDeviceOrientation, true);
-        permissionButton.style.display = 'none';
-    }
-
-
-    // --- Animation Loop ---
-    function animate() {
+    // ⭐️ FIX: Move the animate function to the top-level scope
+    // so it's defined before setupGyroscope calls it.
+    const animate = () => {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
+    };
+
+    // --- Gyroscope Control Logic ---
+    const onDeviceOrientation = (event) => {
+        if (!headsetModel) return;
+
+        const alphaRad = THREE.MathUtils.degToRad(event.alpha);
+        const betaRad = THREE.MathUtils.degToRad(event.beta);
+
+        headsetModel.rotation.order = 'YXZ';
+        headsetModel.rotation.y = alphaRad;
+        headsetModel.rotation.x = betaRad;
+    };
+
+    // --- Permission and Event Management ---
+    const setupGyroscope = (button) => {
+        window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
+        if (button) {
+            button.remove();
+        }
+        animate(); // This now works because `animate` is already defined
+    };
+
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        const permissionButton = document.createElement('button');
+        permissionButton.id = 'gyro-permission-btn';
+        permissionButton.innerText = 'Allow Motion Access';
+
+        Object.assign(permissionButton.style, {
+            position: 'absolute',
+            zIndex: '10',
+            top: '65%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            padding: '12px 24px',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: '#000',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            border: 'none',
+            borderRadius: '30px',
+            cursor: 'pointer',
+            backdropFilter: 'blur(5px)',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)'
+        });
+        
+        container.appendChild(permissionButton);
+
+        permissionButton.addEventListener('click', () => {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        setupGyroscope(permissionButton);
+                    } else {
+                        permissionButton.innerText = 'Access Denied';
+                    }
+                })
+                .catch(console.error);
+        }, { once: true });
+
+    } else {
+        setupGyroscope(null);
     }
 
-    // --- Event Listeners and Initial Setup ---
-    function onResize() {
+    // --- Event Listeners ---
+    const onResize = () => {
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
         if (width > 0 && height > 0) {
@@ -118,9 +131,8 @@ export function initMobileModel() {
             camera.updateProjectionMatrix();
             renderer.setSize(width, height, false);
         }
-    }
-    window.addEventListener('resize', onResize);
+    };
 
+    window.addEventListener('resize', onResize);
     onResize();
-    animate();
 }

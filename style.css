@@ -270,6 +270,7 @@ body {
 .info-media {
     position: relative;
     flex-basis: 50%;
+    padding-top: 100px;
     flex-shrink: 0;
     height: 85vh;
 }
@@ -284,6 +285,7 @@ body {
     border-radius: 16px;
     display: block;
     object-fit:cover;
+    padding-top: ;
 }
 
 .info-title {
@@ -407,26 +409,6 @@ body {
 
 @media (max-width: 900px) {
 
-   .demo-reel {
-        position: relative; /* This is the anchor for the iframe */
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden; /* This hides the parts of the video outside the screen */
-        border-radius: 0;
-    }
-
-        /* 2. Force the iframe to cover the full screen */
-    .demo-reel iframe {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        /* This trick forces a 16:9 video to cover a vertical screen */
-        width: 300%; 
-        height: 100%;
-    }
-
 
       .info-video {
         width: 100%;
@@ -521,14 +503,18 @@ body {
     }
 
     /* Existing styles for other sections */
-.info-media {
-        width: 100%;
+    .info-media {
+    position: relative;
+        flex-basis: 100%;
+        max-width: 80vw;
+        margin: 0 auto;
+        /* ✨ CHANGE: Change this to a responsive height, or remove it */
+        height: 50vh; /* Adjust this value as needed */
         display: flex;
         justify-content: center;
-        /* Remove any fixed height that was causing the clipping */
-        height: auto;
-        min-height: unset;
-        padding: 0;
+        align-items: center;
+        /* You can remove this or reduce it, depending on the desired spacing */
+        padding-bottom: 0; 
     }
 
 #quest-canvas-mobile {
@@ -544,19 +530,6 @@ body {
         padding: 0 1rem;
         margin-top: -50px;
     }
-
-     .info-section {
-        overflow: visible;
-        padding: 4rem 1rem; /* Give it proper spacing */
-    }
-
-     .info-container {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem; /* Add space between the 3D model and the text */
-    }
-
-
 }
 
 @media (max-width: 768px) {
@@ -569,7 +542,7 @@ body {
         margin: 0 auto;
         /* ✨ REMOVED: height: 65vh; */
         /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
-        min-height: 60vh; 
+        min-height: 40vh; 
         display: flex;
         justify-content: center;
         align-items: center;
@@ -597,25 +570,11 @@ body {
     }
 
     .demo-reel {
-        position: relative; /* This is the anchor for the iframe */
         width: 100vw;
-        height: 100vh;
-        overflow: hidden; /* This hides the parts of the video outside the screen */
+        height: 80vh;
         border-radius: 0;
     }
 
-        /* 2. Force the iframe to cover the full screen */
-    .demo-reel iframe {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        /* This trick forces a 16:9 video to cover a vertical screen */
-        width: 300%; 
-        height: 100%;
-    }
-    
     .video-overlay-wrapper iframe {
         position: static;
         width: 100vw;
@@ -654,10 +613,9 @@ body {
     }
 
     .info-video {
-        margin-top: 50px;
         transform: translate(0%, 27%);
-        width: 100%;
-        height: 100%;
+        width: 90%;
+        height: 90%;
     }
 
     .mobile-text {
