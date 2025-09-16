@@ -7,7 +7,8 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
  */
 export async function initMobileModel() {
     const canvas = document.getElementById('quest-canvas-mobile');
-    const container = document.querySelector('.info-media');
+    // ✨ FIX: The parent is now the new container div for reliable positioning
+    const container = document.querySelector('.model-viewer-container');
     
     if (!canvas || !container) {
         console.error('Required HTML elements not found for the mobile model.');
@@ -16,7 +17,7 @@ export async function initMobileModel() {
 
     // --- Scene, Camera, and Renderer Setup ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 2.5;
 
     const renderer = new THREE.WebGLRenderer({
@@ -24,8 +25,6 @@ export async function initMobileModel() {
         antialias: true,
         alpha: true
     });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
     // --- Lighting ---
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
@@ -53,58 +52,42 @@ export async function initMobileModel() {
         return;
     }
 
-    // ⭐️ FIX: Move the animate function to the top-level scope
-    // so it's defined before setupGyroscope calls it.
+    // --- Gyroscope Control Logic ---
+    const onDeviceOrientation = (event) => {
+        if (!headsetModel || !event.alpha) return;
+
+        const alphaRad = THREE.MathUtils.degToRad(event.alpha);
+        const betaRad = THREE.MathUtils.degToRad(event.beta);
+
+        headsetModel.rotation.order = 'YXZ'; // Yaw, Pitch, Roll
+        headsetModel.rotation.y = alphaRad;
+        headsetModel.rotation.x = betaRad;
+    };
+    
     const animate = () => {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
     };
 
-    // --- Gyroscope Control Logic ---
-    const onDeviceOrientation = (event) => {
-        if (!headsetModel) return;
-
-        const alphaRad = THREE.MathUtils.degToRad(event.alpha);
-        const betaRad = THREE.MathUtils.degToRad(event.beta);
-
-        headsetModel.rotation.order = 'YXZ';
-        headsetModel.rotation.y = alphaRad;
-        headsetModel.rotation.x = betaRad;
-    };
-
     // --- Permission and Event Management ---
     const setupGyroscope = (button) => {
-        window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
+        window.addEventListener('deviceorientation', onDeviceOrientation);
         if (button) {
-            button.remove();
+            button.remove(); // Remove button after permission is granted
         }
-        animate(); // This now works because `animate` is already defined
     };
-
+    
+    // ✨ FIX: This is the correct way to handle iOS gyro permissions.
+    // It checks if a permission request is needed and creates the button dynamically.
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // Create the button dynamically and append it to the container
         const permissionButton = document.createElement('button');
         permissionButton.id = 'gyro-permission-btn';
-        permissionButton.innerText = 'Allow Motion Access';
+        permissionButton.innerText = 'Activate Motion';
+        container.appendChild(permissionButton); // Add button to our stable container
 
-        Object.assign(permissionButton.style, {
-            position: 'absolute',
-            zIndex: '10',
-            top: '65%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            padding: '12px 24px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            color: '#000',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            border: 'none',
-            borderRadius: '30px',
-            cursor: 'pointer',
-            backdropFilter: 'blur(5px)',
-            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)'
-        });
-        
-        container.appendChild(permissionButton);
+        // Apply styles directly via CSS for better management
+        // (Ensure the #gyro-permission-btn rule is in your stylesheet)
 
         permissionButton.addEventListener('click', () => {
             DeviceOrientationEvent.requestPermission()
@@ -112,27 +95,28 @@ export async function initMobileModel() {
                     if (permissionState === 'granted') {
                         setupGyroscope(permissionButton);
                     } else {
-                        permissionButton.innerText = 'Access Denied';
+                        permissionButton.innerText = 'Motion Access Denied';
+                        permissionButton.disabled = true;
                     }
                 })
                 .catch(console.error);
         }, { once: true });
-
     } else {
+        // For Android and other devices that don't need explicit permission
         setupGyroscope(null);
     }
-
-    // --- Event Listeners ---
+    
+    // --- Responsive Renderer ---
     const onResize = () => {
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        if (width > 0 && height > 0) {
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height, false);
-        }
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
     };
 
     window.addEventListener('resize', onResize);
-    onResize();
+    onResize(); // Set initial size
+    animate(); // Start the animation loop immediately
 }
