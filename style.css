@@ -137,6 +137,7 @@ body {
 }
 
 @keyframes bounce {
+
     0%,
     100% {
         transform: translateX(-50%) translateY(0) rotate(-45deg);
@@ -252,11 +253,10 @@ body {
     object-fit: cover;
 }
 
-/* Info Section - FIXED FOR DESKTOP */
+/* Info Section */
 .info-section {
-    padding: 60px 2rem;
+    padding: 0px 1rem;
     background-color: black;
-    min-height: 100vh;
 }
 
 .info-container {
@@ -264,24 +264,18 @@ body {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 4rem;
-    min-height: 80vh;
+    gap: 3rem;
 }
 
 .info-media {
-    flex: 0 0 45%;
-    height: 60vh;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-basis: 50%;
+    flex-shrink: 0;
+    height: 85vh;
 }
 
-/* FIXED: Desktop text layout */
 .info-text {
-    flex: 1;
-    max-width: none;
-    padding-left: 2rem;
+    flex-basis: calc(100% - 50%);
 }
 
 .info-video {
@@ -289,30 +283,27 @@ body {
     height: 100%;
     border-radius: 16px;
     display: block;
-    object-fit: cover;
+    object-fit:cover;
 }
 
 .info-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 900;
     color: #ffffff;
-    margin: 0 0 1.5rem 0;
-    line-height: 1.1;
+    margin: 0 0 1rem 0;
 }
 
-.info-subtitle {
-    font-size: 2.8rem;
+  .info-subtitle {
+     font-size: 2.5rem;
     font-weight: 900;
     color: #ffffff;
-    margin: 2rem 0 1rem 0;
-    line-height: 1.1;
-}
+    margin: 0 0 1rem 0;
+    }
 
 .info-description {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 1.7;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
+    max-width: 55ch;
 }
 
 /* Footer */
@@ -354,18 +345,20 @@ body {
 #quest-canvas-mobile {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    bottom: 50%;
+    width: 80%;
+    height: 80%;
     z-index: 2;
 }
 
 #gyro-permission-btn {
     position: absolute;
-    bottom: 15%;
+    bottom: 15%; /* Positions 15% from the bottom of the square */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10;
+    z-index: 10; /* Keeps it on top */
+
+    /* Styling */
     padding: 12px 24px;
     font-size: 16px;
     font-weight: bold;
@@ -378,8 +371,9 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+
 #gyro-permission-btn:hover {
-    transform: translateX(-50%) scale(1.05);
+    transform: translate(-50%, -50%) scale(1.05); /* Add a hover effect */
     background-color: white;
 }
 
@@ -400,19 +394,41 @@ body {
 
 .contact-button:hover {
     background-color: white;
-    color: #1a1a1a;
+    color: #1a1a1a; /* A dark color for contrast */
 }
 
 .model-viewer-container {
-    position: relative;
+    position: relative; /* This is the anchor */
     width: 90%;
     max-width: 100%;
-    aspect-ratio: 1 / 1;
-    margin: auto;
+    aspect-ratio: 1 / 1; /* This is the key to consistency */
+    margin: auto; /* This centers the container itself */
 }
 
-/* MOBILE STYLES - FIXED */
 @media (max-width: 900px) {
+
+
+      .info-video {
+        width: 100%;
+        height: 100%;
+    }
+
+     .info-media {
+        position: relative;
+        flex-basis: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        /* ✨ REMOVED: height: 65vh; */
+        /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
+        min-height: 40vh; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* ✨ CHANGE: Use padding-top to create space above the headset */
+        padding-top: 15vh;
+        padding-bottom: 2rem;
+    }
+
     /* Hide the desktop scroller on mobile */
     .features-wrapper {
         display: none;
@@ -438,6 +454,7 @@ body {
         margin: 0 1rem 1rem 1rem;
         display: flex;
         flex-direction: column;
+        /* ✨ REMOVED: align-items: center; */
     }
 
     /* Style for the media and text areas within each slide */
@@ -461,10 +478,13 @@ body {
 
     .mobile-text {
         flex: 1;
+        /* ✨ CHANGED: Reduced padding */
         padding: 1rem 1.5rem 1rem;
         display: flex;
         flex-direction: column;
+        /* ✨ CHANGED: Align text to the left */
         text-align: left;
+        /* ✨ REMOVED: justify-content: center; */
     }
 
     .mobile-text h3 {
@@ -480,108 +500,83 @@ body {
         margin: 0;
     }
 
-    /* FIXED: Mobile info section */
-    .info-section {
-        padding: 0;
-        background-color: black;
-    }
-
-    .info-container {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        gap: 0;
-        min-height: auto;
-    }
-
+    /* Existing styles for other sections */
     .info-media {
-        width: 100%;
-        height: 60vh;
-        flex: none;
-        position: relative;
+    position: relative;
+        flex-basis: 100%;
+        max-width: 80vw;
+        margin: 0 auto;
+        /* ✨ CHANGE: Change this to a responsive height, or remove it */
+        height: 50vh; /* Adjust this value as needed */
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 2rem;
+        /* You can remove this or reduce it, depending on the desired spacing */
+        padding-bottom: 0; 
     }
 
-    .info-video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 16px;
-    }
+#quest-canvas-mobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
 
     .info-text {
-        padding: 0 1.5rem 2rem;
-        max-width: none;
-        text-align: center;
-    }
-
-    .info-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .info-subtitle {
-        font-size: 2.2rem;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .info-description {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        margin-bottom: 1.2rem;
-    }
-
-    .model-viewer-container {
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
-
-    #quest-canvas-mobile {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
+        padding: 0 1rem;
+        margin-top: -50px;
     }
 }
 
 @media (max-width: 768px) {
-    /* FIXED: iPhone video cutoff issue */
-    .demo-reel {
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
-        margin: 0;
+
+
+        .info-media {
+        position: relative;
+        flex-basis: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        /* ✨ REMOVED: height: 65vh; */
+        /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
+        min-height: 40vh; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* ✨ CHANGE: Use padding-top to create space above the headset */
+        padding-top: 15vh;
+        padding-bottom: 2rem;
     }
 
-    .demo-reel iframe {
-        width: 100vw;
-        height: 100vh;
+        #quest-canvas-mobile {
+        /* This is correct as it positions the canvas relative to .info-media */
         position: absolute;
-        top: 0;
-        left: 0;
-    }
-
-    .hero-section {
-        height: 100vh;
-        padding: 0;
-        margin: 0;
-    }
-
-    .visual-content {
+        bottom: 0;
+        left: 50%;
+        /* transform: translateX(-50%);
+        transform: translateY(-25%); */
+        transform: translate(-50%, -45%);
         width: 100%;
         height: 100%;
-        position: relative;
+        z-index: 2;
     }
+
 
     .mobile-slide {
         margin: 0 0.5rem 1rem 0.5rem;
+    }
+
+    .demo-reel {
+        width: 100vw;
+        height: 80vh;
+        border-radius: 0;
+    }
+
+    .video-overlay-wrapper iframe {
+        position: static;
+        width: 100vw;
+        height: 80vh;
     }
 
     .logo img {
@@ -589,58 +584,87 @@ body {
         width: auto;
     }
 
-    .info-media {
-        height: 50vh;
-        margin-bottom: 1rem;
+    .info-section {
+        padding: 50px 1rem;
+    }
+
+    .info-container {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
     }
 
     .info-title {
+        margin-top: -120px;
         font-size: 2rem;
     }
 
     .info-subtitle {
-        font-size: 1.8rem;
+        margin-top: 10gpx;
+        font-size: 2rem;
     }
 
-    .info-description {
-        font-size: 1rem;
+    .info-media {
+        width: 100%;
+        max-width: 500px;
+        height: 65vh;
     }
 
-    /* FIXED: Gyro button positioning for iPhone */
+    .info-video {
+        margin-top: 50px;
+        transform: translate(0%, 27%);
+        width: 100%;
+        height: 100%;
+    }
+
+    .mobile-text {
+        flex: 1;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .mobile-text h3 {
+        font-size: 1.5rem;
+        margin: 0 0 0.5rem 0;
+        color: var(--accent-color);
+        font-weight: 700;
+    }
+
+    .mobile-text p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+     .info-text {
+        padding: 0 1rem;
+        margin-top: 200px;
+        margin-bottom: 20px;
+    }
+
     #gyro-permission-btn {
-        position: absolute;
-        top: 70%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        padding: 14px 28px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #000000;
-        background-color: rgba(255, 255, 255, 0.95);
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        backdrop-filter: blur(5px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        white-space: nowrap;
-    }
+    /* Positioning */
+    position: absolute;
+    z-index: 10; /* Make sure it's on top */
+    left: 50%;
 
-    #gyro-permission-btn:hover {
-        transform: translate(-50%, -50%) scale(1.05);
-        background-color: white;
-    }
+    /* ✨ CHANGE: Position from the top, not the bottom */
+    top: 75%; 
+    transform: translate(-50%, -50%); /* This perfectly centers the button */
 
-    /* Additional safe area handling for notched devices */
-    .navbar {
-        padding-top: env(safe-area-inset-top, 0.25rem);
-        padding-left: env(safe-area-inset-left, 2rem);
-        padding-right: env(safe-area-inset-right, 2rem);
-    }
+    /* Styling */
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
 
-    .info-text {
-        padding-left: env(safe-area-inset-left, 1.5rem);
-        padding-right: env(safe-area-inset-right, 1.5rem);
-        padding-bottom: env(safe-area-inset-bottom, 2rem);
-    }
 }
