@@ -15,247 +15,65 @@ body {
     color: var(--text-color);
 }
 
-/* LOADER */
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000000;
-    z-index: 9999;
-    transition: opacity 0.75s ease-in-out;
-}
+/* --- 2. STRUCTURE & DEFAULT MOBILE STYLES --- */
 
-#loading-screen.fade-out {
-    opacity: 0;
-    pointer-events: none;
-}
-
-#main-content.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-/* --- 2. LAYOUT & CORE STRUCTURE --- */
+/* Navbar */
 .navbar {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);
-    padding: 0.25rem 2rem;
+    padding: 0 1rem;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 100;
     box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-}
-
-.nav-left,
-.nav-right {
-    flex: 1;
+    
+    /* ✨ LOGO FIX: Set a minimum height for the navbar itself */
+    min-height: 80px; 
 }
 
 .logo-container {
-    flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure container fills navbar height */
 }
 
 .logo img {
-    height: 100px;
+    /* ✨ LOGO FIX: Make the image scale relative to the navbar's height */
+    height: 60px; /* Set a specific, stable height for the logo */
     width: auto;
 }
 
-.logotext img {
-    height: 50px;
-    width: auto;
-}
-
+/* Hero Section */
 .hero-section {
-    height: 100vh;
+    height: 100dvh; /* Prevents clipping from mobile browser UI */
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-}
-
-.features-wrapper {
-    height: 500vh;
-    position: relative;
-}
-
-.features-section {
-    height: 100vh;
-    width: 100%;
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* --- 3. COMPONENT STYLES --- */
-
-/* Hero */
-.visual-content {
-    text-align: center;
+    box-sizing: border-box;
 }
 
 .demo-reel {
     width: 100%;
-    height: 90%;
-    border-radius: 20px;
+    height: 100%;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    aspect-ratio: 16 / 9; /* Guarantees correct video shape */
 }
 
-/* Updated iframe styles */
 .demo-reel iframe {
-    width: 90vw;
-    height: 80vh;
-    border: none;
-}
-
-.scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    width: 24px;
-    height: 24px;
-    border-left: 3px solid var(--accent-color);
-    border-bottom: 3px solid var(--accent-color);
-    transform: translateX(-50%) rotate(-45deg);
-    animation: bounce 2.2s infinite cubic-bezier(0.25, 1, 0.5, 1);
-    transition: opacity 0.4s ease-out;
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateX(-50%) translateY(0) rotate(-45deg);
-    }
-
-    50% {
-        transform: translateX(-50%) translateY(-15px) rotate(-45deg);
-    }
-}
-
-/* Interactive Scroller */
-.interactive-scroller {
-    display: flex;
-    max-width: 1400px;
-    width: 100%;
-    padding: 0 2rem;
-    gap: 2rem;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-}
-
-.text-reel-container,
-.sticky-photo-container,
-.media-reel-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.text-reel-container {
-    flex-basis: 25%;
-}
-
-.text-reel {
-    height: 250px;
-    width: 100%;
-    overflow: hidden;
-}
-
-.text-strip {
-    transition: transform var(--transition-speed) ease-out;
-}
-
-.text-item {
-    height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: opacity var(--transition-speed) ease-in-out;
-    opacity: 0.3;
-}
-
-.text-item.active {
-    opacity: 1;
-}
-
-.text-item h3 {
-    font-size: 2.2rem;
-    color: var(--accent-color);
-    margin: 0 0 0.5rem 0;
-    font-weight: 900;
-}
-
-.text-item p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
-
-.sticky-photo-container {
-    flex-basis: 40%;
-}
-
-.sticky-photo img {
-    max-width: 100%;
-    border-radius: 12px;
-}
-
-/* Styles for the 3D canvas (desktop) */
-.sticky-photo canvas {
-    display: block;
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1;
-    cursor: grab;
-}
-
-.media-reel-container {
-    flex-basis: 25%;
-}
-
-.media-reel {
-    width: 100%;
-    height: 250px;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: var(--surface-color);
-}
-
-.media-strip {
-    transition: transform var(--transition-speed) ease-out;
-}
-
-.media-item {
-    width: 100%;
-    height: 250px;
-}
-
-.media-item img,
-.media-item video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    border: none;
 }
 
 /* Info Section */
 .info-section {
-    padding: 0px 1rem;
+    padding: 50px 1rem;
     background-color: black;
 }
 
@@ -263,122 +81,60 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
 }
 
+/* Video Container */
 .info-media {
-    position: relative;
-    flex-basis: 50%;
-    padding-top: 100px;
-    flex-shrink: 0;
-    height: 85vh;
-}
-
-.info-text {
-    flex-basis: calc(100% - 50%);
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
 }
 
 .info-video {
     width: 100%;
     height: 100%;
-    border-radius: 16px;
-    display: block;
-    object-fit:cover;
-    padding-top: ;
+    object-fit: cover;
 }
 
-.info-title {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: #ffffff;
-    margin: 0 0 1rem 0;
+/* 3D Model & Button Container */
+.model-viewer-container {
+    display: grid;
+    place-items: center; /* Robustly centers both canvas and button */
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
 }
 
-  .info-subtitle {
-     font-size: 2.5rem;
-    font-weight: 900;
-    color: #ffffff;
-    margin: 0 0 1rem 0;
-    }
+#quest-canvas-mobile {
+    display: block; /* Make canvas visible */
+}
 
-.info-description {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    max-width: 55ch;
+.info-text {
+    text-align: center;
+    max-width: 65ch;
+}
+
+/* Hide Desktop Elements on Mobile */
+.features-wrapper {
+    display: none;
+}
+.mobile-scroller { /* If you add this back, style it here */
+    display: none;
 }
 
 /* Footer */
 .launch-info {
     text-align: center;
-    padding: 2rem 2rem;
-    background-color: black;
+    padding: 2rem;
 }
-
-.launch-info .fine-print {
-    font-size: 0.8rem;
-    color: #a0a0a0;
-    margin-top: 1rem;
-}
-
-.launch-info h2 {
-    font-size: 3.0rem;
-    color: white;
-    margin: 0;
-}
-
-.launch-info p {
-    font-size: 3rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    color: white;
-}
-
-/* --- 4. RESPONSIVE & MOBILE STYLES --- */
-.mobile-scroller {
-    display: none;
-}
-
-.mentions {
-    font-size: 5px;
-}
-
-#quest-canvas-mobile {
-    position: absolute;
-    top: 0;
-    bottom: 50%;
-    width: 80%;
-    height: 80%;
-    z-index: 2;
-}
-
-#gyro-permission-btn {
-    position: absolute;
-    bottom: 15%; /* Positions 15% from the bottom of the square */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10; /* Keeps it on top */
-
-    /* Styling */
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #000;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-
-#gyro-permission-btn:hover {
-    transform: translate(-50%, -50%) scale(1.05); /* Add a hover effect */
-    background-color: white;
-}
-
 .contact-button {
     display: inline-block;
     padding: 10px 20px;
@@ -390,282 +146,84 @@ body {
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
-    text-align: center;
     transition: background-color 0.3s, color 0.3s;
 }
-
 .contact-button:hover {
     background-color: white;
-    color: #1a1a1a; /* A dark color for contrast */
+    color: #1a1a1a;
 }
 
-.model-viewer-container {
-    position: relative; /* This is the anchor */
-    width: 90%;
-    max-width: 100%;
-    aspect-ratio: 1 / 1; /* This is the key to consistency */
-    margin: auto; /* This centers the container itself */
-}
-
-@media (max-width: 900px) {
-
-
-      .info-video {
-        width: 100%;
-        height: 100%;
-    }
-
-     .info-media {
-        position: relative;
-        flex-basis: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        /* ✨ REMOVED: height: 65vh; */
-        /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
-        min-height: 40vh; 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* ✨ CHANGE: Use padding-top to create space above the headset */
-        padding-top: 15vh;
-        padding-bottom: 2rem;
-    }
-
-    /* Hide the desktop scroller on mobile */
+/* --- 3. DESKTOP OVERRIDES --- */
+@media (min-width: 901px) {
+    /* Show Desktop Elements */
     .features-wrapper {
+        display: block;
+        height: 500vh;
+        position: relative;
+    }
+    
+    /* Hide Mobile Elements */
+    .model-viewer-container {
         display: none;
     }
 
-    /* Show the mobile scroller */
-    .mobile-scroller {
-        display: block;
-        height: 100%;
-        overflow-y: scroll;
-        scroll-snap-type: y mandatory;
-        padding-top: 60px;
-        box-sizing: border-box;
-    }
-
-    /* Style for each snapping slide */
-    .mobile-slide {
-        height: 60vh;
-        scroll-snap-align: start;
-        background-color: var(--surface-color);
-        border-radius: 25px;
-        overflow: hidden;
-        margin: 0 1rem 1rem 1rem;
-        display: flex;
-        flex-direction: column;
-        /* ✨ REMOVED: align-items: center; */
-    }
-
-    /* Style for the media and text areas within each slide */
-    .mobile-media {
-        flex: 1;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 1.5rem;
-    }
-
-    .mobile-media img,
-    .mobile-media video,
-    .mobile-media canvas {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 15px;
-    }
-
-    .mobile-text {
-        flex: 1;
-        /* ✨ CHANGED: Reduced padding */
-        padding: 1rem 1.5rem 1rem;
-        display: flex;
-        flex-direction: column;
-        /* ✨ CHANGED: Align text to the left */
-        text-align: left;
-        /* ✨ REMOVED: justify-content: center; */
-    }
-
-    .mobile-text h3 {
-        font-size: 1.5rem;
-        margin: 0 0 0.5rem 0;
-        color: var(--accent-color);
-        font-weight: 700;
-    }
-
-    .mobile-text p {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin: 0;
-    }
-
-    /* Existing styles for other sections */
-    .info-media {
-    position: relative;
-        flex-basis: 100%;
-        max-width: 80vw;
-        margin: 0 auto;
-        /* ✨ CHANGE: Change this to a responsive height, or remove it */
-        height: 50vh; /* Adjust this value as needed */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* You can remove this or reduce it, depending on the desired spacing */
-        padding-bottom: 0; 
-    }
-
-#quest-canvas-mobile {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-    .info-text {
-        padding: 0 1rem;
-        margin-top: -50px;
-    }
-}
-
-@media (max-width: 768px) {
-
-
-        .info-media {
-        position: relative;
-        flex-basis: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        /* ✨ REMOVED: height: 65vh; */
-        /* ✨ ADDED: Give it a minimum height to prevent it from collapsing entirely */
-        min-height: 40vh; 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* ✨ CHANGE: Use padding-top to create space above the headset */
-        padding-top: 15vh;
-        padding-bottom: 2rem;
-    }
-
-        #quest-canvas-mobile {
-        /* This is correct as it positions the canvas relative to .info-media */
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        /* transform: translateX(-50%);
-        transform: translateY(-25%); */
-        transform: translate(-50%, -45%);
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-    }
-
-
-    .mobile-slide {
-        margin: 0 0.5rem 1rem 0.5rem;
-    }
-
-    .demo-reel {
-        width: 100vw;
-        height: 80vh;
-        border-radius: 0;
-    }
-
-    .video-overlay-wrapper iframe {
-        position: static;
-        width: 100vw;
-        height: 80vh;
+    .navbar {
+        padding: 0.25rem 2rem;
+        min-height: 110px; /* Taller navbar on desktop */
     }
 
     .logo img {
-        height: 70px;
-        width: auto;
+        height: 100px; /* Larger logo on desktop */
+    }
+
+    .hero-section {
+        padding: 2rem;
+    }
+
+    .demo-reel {
+        max-width: 1600px;
+        border-radius: 20px;
     }
 
     .info-section {
-        padding: 50px 1rem;
+        padding: 100px 1rem;
     }
 
     .info-container {
-        flex-direction: column;
-        text-align: center;
+        flex-direction: row;
         align-items: center;
-    }
-
-    .info-title {
-        margin-top: -120px;
-        font-size: 2rem;
-    }
-
-    .info-subtitle {
-        margin-top: 10gpx;
-        font-size: 2rem;
+        gap: 3rem;
     }
 
     .info-media {
+        flex-basis: 50%;
+        max-width: none;
+    }
+
+    .info-text {
+        flex-basis: 50%;
+        text-align: left;
+    }
+
+    /* (Add your desktop .features-section and .interactive-scroller styles back here) */
+    .features-section {
+        height: 100vh;
         width: 100%;
-        max-width: 500px;
-        height: 65vh;
-    }
-
-    .info-video {
-        transform: translate(0%, 27%);
-        width: 90%;
-        height: 90%;
-    }
-
-    .mobile-text {
-        flex: 1;
-        padding: 1.5rem;
+        position: sticky;
+        top: 0;
         display: flex;
-        flex-direction: column;
         justify-content: center;
+        align-items: center;
+        overflow: hidden;
     }
-
-    .mobile-text h3 {
-        font-size: 1.5rem;
-        margin: 0 0 0.5rem 0;
-        color: var(--accent-color);
-        font-weight: 700;
+    .interactive-scroller {
+        display: flex;
+        max-width: 1400px;
+        width: 100%;
+        padding: 0 2rem;
+        gap: 2rem;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
     }
-
-    .mobile-text p {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin: 0;
-    }
-
-     .info-text {
-        padding: 0 1rem;
-        margin-top: 200px;
-        margin-bottom: 20px;
-    }
-
-    #gyro-permission-btn {
-    /* Positioning */
-    position: absolute;
-    z-index: 10; /* Make sure it's on top */
-    left: 50%;
-
-    /* ✨ CHANGE: Position from the top, not the bottom */
-    top: 75%; 
-    transform: translate(-50%, -50%); /* This perfectly centers the button */
-
-    /* Styling */
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
 }
